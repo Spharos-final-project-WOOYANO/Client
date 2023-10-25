@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: CLIENT-SERVICE
+    name: client-service
   profiles:
     default: local
 
