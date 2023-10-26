@@ -18,16 +18,16 @@ pipeline {
         stage('DockerSize'){
             steps {
                 sh '''
-                    docker stop Client-Service || true
-                    docker rm Client-Service || true
-                    docker rmi Client-Service-Img || true
-                    docker build -t Client-Service-Img:latest .
+                    docker stop client-service || true
+                    docker rm client-service || true
+                    docker rmi client-service-img || true
+                    docker build -t client-service-img:latest .
                 '''
             }
         }
         stage('Deploy'){
             steps{
-                sh 'docker run -d --name Client-Service -p 8080:8000 Client-Service-Img'
+                sh 'docker run -d --name client-service -p 8001:8000 client-service-img'
             }
         }
     }
