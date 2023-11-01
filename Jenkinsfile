@@ -42,7 +42,7 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                sh 'docker run --network spharos-network --name client-service client-service-img'
+                sh 'docker run --network spharos-network -d --name client-service client-service-img'
             }
         }
     }
