@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import spharos.client.clients.application.ClientService;
 import spharos.client.clients.application.EmailService;
+import spharos.client.clients.vo.ClientFindEmailOut;
 import spharos.client.clients.vo.ClientSignUpIn;
 import spharos.client.global.common.response.BaseResponse;
 
@@ -67,14 +68,44 @@ public class ClientController {
     /*
         아이디찾기
      */
+    @Operation(summary = "아이디찾기",
+            description = "이름과 사업자등록번호로 일치하는 업체의 로그인 아이디(이메일)을 찾음",
+            tags = { "Client FindEmail" })
+    @GetMapping("/email/find")
+    public BaseResponse<?> findEmail(@RequestParam("ceoName") String ceoName,
+                                     @RequestParam("registrationNumber") String registrationNumber) {
+        // 사업자 아이디 찾기
+        ClientFindEmailOut clientFindEmailOut = clientService.findEmail(ceoName, registrationNumber);
+        return new BaseResponse<>(clientFindEmailOut);
+    }
 
     /*
         비밀번호 변경시 이메일인증
      */
+    @Operation(summary = "비밀번호변경시 이메일 인증",
+            description = "비밀번호변경시 이메일인증을 위한 메일 전송",
+            tags = { "Client ChangePassword" })
+    @GetMapping("/email/password/auth")
+    public BaseResponse<?> sendEmailPasswordAuth(@RequestParam("email") String email,
+                                                 @RequestParam("registrationNumber") String registrationNumber) {
+
+        // 이메일 존재 체크
+        String ceoName = clientService.checkExistEmail(email, registrationNumber);
+
+        // 비밀번호 변경을 위한 인증메일 전송
+        emailService.sendPasswordChangeAuthMail(ceoName, email);
+        return new BaseResponse<>();
+    }
 
     /*
         비밀번호 변경
      */
+    @Operation(summary = "비밀번호변경", description = "비밀번호변경(로그인전)", tags = { "User ChangePassword" })
+    @PutMapping("/password")
+    public BaseResponse<?> changePassword() {
+
+        return new BaseResponse<>();
+    }
 
     /*
         로그인
