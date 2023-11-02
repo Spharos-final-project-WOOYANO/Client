@@ -6,15 +6,15 @@ pipeline {
                 git branch: 'develop',credentialsId:'0-shingo', url:'https://github.com/Spharos-final-project-WOOYANO/Client'
             }
         }
-	stage('Secret-File Download'){
+	stage('Secret-File Download') {
 	    steps {
 	        withCredentials([
-		    file(credentialsId: 'Wooyano-Secret-File', variable:'secret')
+		    file(credentialsId:'Wooyano-Secret-File', variable: 'secret')
 		    ])
-		{
-		    sh 'cp \$secret ./src/main/resources/application-secret.yml'
+	        {
+		    sh "cp \$secret ./src/main/resources/application-secret.yml"
 		}
-	    }
+  	    }
 	}
         stage('Build'){
             steps{
@@ -24,9 +24,9 @@ pipeline {
                         chmod +x ./gradlew
                         ./gradlew build
                     '''
-                    
+
                 }
-                    
+
             }
         }
         stage('DockerSize'){
@@ -36,7 +36,6 @@ pipeline {
                     docker rm client-service || true
                     docker rmi client-service-img || true
                     docker build -t client-service-img:latest .
-
                 '''
             }
         }
@@ -47,4 +46,3 @@ pipeline {
         }
     }
 }
-
