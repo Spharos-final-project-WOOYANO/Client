@@ -8,6 +8,7 @@ import spharos.client.clients.domain.Bank;
 import spharos.client.clients.domain.Client;
 import spharos.client.clients.infrastructure.BankRepository;
 import spharos.client.clients.infrastructure.ClientRepository;
+import spharos.client.clients.vo.ClientFindEmailOut;
 import spharos.client.clients.vo.ClientSignUpIn;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
@@ -66,6 +67,42 @@ public class ClientServiceImpl implements ClientService {
                 .client(client)
                 .build();
         bankRepository.save(bank);
+    }
+
+    // 아이디찾기
+    @Override
+    public ClientFindEmailOut findEmail(String ceoName, String registrationNumber) {
+
+        // 대표자명과 사업자번호로 일치하는 업체가 있는지 조회
+        Client client = clientRepository.findByCeoNameAndClientRegistrationNumber(ceoName,registrationNumber)
+                .orElseThrow(() -> new CustomException(ResponseCode.NOT_EXISTS_CLIENT_ID));
+
+        // 사업자 상태가 탈퇴 또는 대기 인 경우
+        if(client.getClientStatus() == 1 || client.getClientStatus() == 3) {
+            throw new CustomException(ResponseCode.NOT_EXISTS_CLIENT_ID);
+        }
+
+        return ClientFindEmailOut.builder()
+                .clientId(client.getClientId())
+                .build();
+    }
+
+    // 이메일 존재 체크
+    @Override
+    public String checkExistEmail(String email, String registrationNumber) {
+
+        // 이메일과 사업자 번호로 일치하는 업체가 있는지 조회
+        Client client = clientRepository.findByClientIdAndClientRegistrationNumber(email,registrationNumber)
+                .orElseThrow(() -> new CustomException(ResponseCode.NOT_EXISTS_CLIENT_ID));
+
+        // 존재하는 이메일이면 메일 발송을 위해 사업자 이름을 리턴함
+        return client.getCeoName();
+    }
+
+    // 비밀번호 변경
+    @Override
+    public void modifyPassword() {
+
     }
 
 }

@@ -38,10 +38,9 @@ public class SecurityConfiguration {
                                         "/api/v1/client/login",
                                         "/api/v1/client/email/check",
                                         "/api/v1/client/certnum/check",
-                                        "/api/v1/users/nickname/check",
-                                        "/api/v1/users/email/find",
-                                        "/api/v1/users/email/password/auth",
-                                        "/api/v1/users/password",
+                                        "/api/v1/client/email/find",
+                                        "/api/v1/client/email/password/auth",
+                                        "/api/v1/client/password",
 
                                         // swagger
                                         "/swagger-ui.html",
