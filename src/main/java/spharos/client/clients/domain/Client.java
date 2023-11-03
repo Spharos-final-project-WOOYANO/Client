@@ -34,13 +34,19 @@ public class Client extends BaseEntity implements UserDetails {
     private String clientPhone;
     @Column(nullable = false, length = 50, name = "client_address")
     private String clientAddress;
-    @Column(nullable = false, length = 10, name = "client_registration_number")
+    @Column(nullable = false, length = 10, name = "client_registration_number") // TODO 코드리뷰 - 자리수 좀 더 여유둘 것
     private String clientRegistrationNumber;
     @Column(nullable = false, name = "client_registration_img_url")
     private String clientRegistrationImgUrl;
     @Column(nullable = false, name = "client_status", columnDefinition = "tinyint default 3")
     private Integer clientStatus;
 
+    // 비밀번호 변경
+    public void setClientPassword(String clientPassword) {
+        this.clientPassword = clientPassword;
+    }
+
+    // 시큐리티 관련
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

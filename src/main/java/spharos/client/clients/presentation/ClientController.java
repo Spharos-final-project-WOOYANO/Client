@@ -7,8 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import spharos.client.clients.application.ClientService;
 import spharos.client.clients.application.EmailService;
-import spharos.client.clients.vo.ClientFindEmailOut;
-import spharos.client.clients.vo.ClientSignUpIn;
+import spharos.client.clients.vo.*;
 import spharos.client.global.common.response.BaseResponse;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -100,17 +99,26 @@ public class ClientController {
     /*
         비밀번호 변경
      */
-    @Operation(summary = "비밀번호변경", description = "비밀번호변경(로그인전)", tags = { "User ChangePassword" })
+    @Operation(summary = "비밀번호변경", description = "비밀번호변경(로그인전)", tags = { "Client ChangePassword" })
     @PutMapping("/password")
-    public BaseResponse<?> changePassword() {
+    public BaseResponse<?> changePassword(@RequestBody ClientChangePasswordIn clientChangePasswordIn) {
 
+        // 비밀번호 변경
+        clientService.modifyPassword(clientChangePasswordIn);
         return new BaseResponse<>();
     }
 
     /*
         로그인
      */
+    @Operation(summary = "로그인", description = "로그인", tags = { "Client Login" })
+    @PostMapping("/login")
+    public BaseResponse<?> login(@RequestBody ClientLoginIn ClientLoginIn) {
 
+        // 로그인
+        ClientLoginOut clientLoginOut = clientService.login(ClientLoginIn);
+        return new BaseResponse<>(clientLoginOut);
+    }
 
 
 

@@ -1,7 +1,6 @@
 package spharos.client.clients.application;
 
-import spharos.client.clients.vo.ClientFindEmailOut;
-import spharos.client.clients.vo.ClientSignUpIn;
+import spharos.client.clients.vo.*;
 
 public interface ClientService {
 
@@ -14,8 +13,8 @@ public interface ClientService {
     // 이메일 존재 체크
     String checkExistEmail(String email, String registrationNumber);
     // 비밀번호 변경
-    void modifyPassword();
-
-
+    void modifyPassword(ClientChangePasswordIn clientChangePasswordIn);
+    // 로그인
+    ClientLoginOut login(ClientLoginIn clientLoginIn);
 
 }
