@@ -4,7 +4,7 @@ package spharos.client.clients.vo;
 import lombok.Getter;
 
 @Getter
-public class ClientSignUpIn {
+public class ClientSignUpRequest {
 
     private String email;
     private String password;

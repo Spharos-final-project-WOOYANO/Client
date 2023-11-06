@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientFindEmailOut {
+public class ClientFindEmailResponse {
 
-    private String clientId;
+    private String email;
 
 }
