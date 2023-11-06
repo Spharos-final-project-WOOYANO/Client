@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spharos.client.bank.application.BankService;
 import spharos.client.bank.dto.BankRegisterDto;
+import spharos.client.bank.infrastructure.BankRepository;
 import spharos.client.clients.domain.Client;
 import spharos.client.clients.infrastructure.ClientRepository;
 import spharos.client.clients.vo.*;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.config.security.JwtTokenProvider;
 import spharos.client.global.exception.CustomException;
-
 import java.util.Optional;
 
 @Slf4j
