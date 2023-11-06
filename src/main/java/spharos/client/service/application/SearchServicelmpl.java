@@ -12,9 +12,10 @@
 //@Service
 //@RequiredArgsConstructor
 //public class SearchServicelmpl implements SearchService{
+//
 //    private final ServiceRepository serviceRepository;
 //    @Override
-//    public List<SearchServiceDto> findHomeKeeperServiceList() {
+//    public String findHomeKeeperServiceList() {
 //        serviceRepository.
 //        return null;
 //    }

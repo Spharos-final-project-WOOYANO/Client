@@ -1,5 +1,5 @@
-package spharos.client.service.infrastructure;
-
-public interface JPAServicecRepository {
-
-}
+//package spharos.client.service.infrastructure;
+//
+//public interface JPAServicecRepository {
+//
+//}

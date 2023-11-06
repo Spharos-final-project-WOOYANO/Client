@@ -1,7 +1,7 @@
-package spharos.client.clients.infrastructure;
+package spharos.client.bank.infrastructure;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import spharos.client.clients.domain.Bank;
+import spharos.client.bank.domain.Bank;
 
 public interface BankRepository extends JpaRepository<Bank, Long> {
 

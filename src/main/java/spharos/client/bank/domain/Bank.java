@@ -1,14 +1,13 @@
-package spharos.client.clients.domain;
+package spharos.client.bank.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import spharos.client.clients.domain.Client;
 
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "bank")
@@ -30,5 +29,21 @@ public class Bank {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Client client;
+
+    private Bank(String bankName, String bankAccount, String bankHolder, Boolean bankState, String bankImgUrl,
+    Client client) {
+        this.bankName = bankName;
+        this.bankAccount = bankAccount;
+        this.bankHolder = bankHolder;
+        this.bankState = bankState;
+        this.bankImgUrl = bankImgUrl;
+        this.client = client;
+    }
+
+    // 업체 생성
+    public static Bank createBank(String bankName, String bankAccount, String bankHolder, Boolean bankState,
+                                  String bankImgUrl, Client client) {
+        return new Bank(bankName, bankAccount, bankHolder, bankState, bankImgUrl, client);
+    }
 
 }
