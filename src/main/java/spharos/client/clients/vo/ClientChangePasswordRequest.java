@@ -3,7 +3,7 @@ package spharos.client.clients.vo;
 import lombok.Getter;
 
 @Getter
-public class ClientChangePasswordIn {
+public class ClientChangePasswordRequest {
 
     private String email;
     private String password;

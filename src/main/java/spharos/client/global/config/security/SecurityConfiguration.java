@@ -37,9 +37,7 @@ public class SecurityConfiguration {
                                         "/api/v1/client/join",
                                         "/api/v1/client/login",
                                         "/api/v1/client/email/check",
-                                        "/api/v1/client/certnum/check",
                                         "/api/v1/client/email/find",
-                                        "/api/v1/client/email/password/auth",
                                         "/api/v1/client/password",
 
                                         // swagger

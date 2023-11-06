@@ -1,10 +1,7 @@
 package spharos.client.clients.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import spharos.client.global.common.domain.BaseEntity;
@@ -12,9 +9,7 @@ import spharos.client.global.common.domain.BaseEntity;
 import java.util.Collection;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "client")
 public class Client extends BaseEntity implements UserDetails {
@@ -34,12 +29,35 @@ public class Client extends BaseEntity implements UserDetails {
     private String clientPhone;
     @Column(nullable = false, length = 50, name = "client_address")
     private String clientAddress;
-    @Column(nullable = false, length = 10, name = "client_registration_number") // TODO 코드리뷰 - 자리수 좀 더 여유둘 것
+    @Column(nullable = false, length = 15, name = "client_registration_number")
     private String clientRegistrationNumber;
     @Column(nullable = false, name = "client_registration_img_url")
     private String clientRegistrationImgUrl;
     @Column(nullable = false, name = "client_status", columnDefinition = "tinyint default 3")
     private Integer clientStatus;
+
+    private Client(String clientId, String clientPassword, String ceoName,
+                   String clientName,String clientPhone, String clientAddress,
+                   String clientRegistrationNumber, String clientRegistrationImgUrl, Integer clientStatus) {
+        this.clientId = clientId;
+        this.clientPassword = clientPassword;
+        this.ceoName = ceoName;
+        this.clientName = clientName;
+        this.clientPhone = clientPhone;
+        this.clientAddress = clientAddress;
+        this.clientRegistrationNumber = clientRegistrationNumber;
+        this.clientRegistrationImgUrl = clientRegistrationImgUrl;
+        this.clientStatus = clientStatus;
+    }
+
+    // 업체 생성
+    public static Client createClient(String clientId, String clientPassword, String ceoName,
+                                      String clientName,String clientPhone, String clientAddress,
+                                      String clientRegistrationNumber, String clientRegistrationImgUrl,
+                                      Integer clientStatus) {
+        return new Client(clientId, clientPassword, ceoName, clientName, clientPhone, clientAddress
+                ,clientRegistrationNumber, clientRegistrationImgUrl, clientStatus);
+    }
 
     // 비밀번호 변경
     public void setClientPassword(String clientPassword) {
