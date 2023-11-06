@@ -2,6 +2,7 @@ package spharos.client.clients.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import spharos.client.clients.domain.Bank;
@@ -22,7 +23,7 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
     private final BankRepository bankRepository;
-//    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     // 이메일 중복체크 후 이메일인증
     @Override

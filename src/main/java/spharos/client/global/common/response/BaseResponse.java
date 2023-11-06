@@ -1,7 +1,5 @@
 package spharos.client.global.common.response;
 
-import org.springframework.http.HttpStatus;
-
 public record BaseResponse<T>(Boolean success, int code, T result) {
 
     // 요청에 성공한 경우 -> return 객체가 필요한 경우
