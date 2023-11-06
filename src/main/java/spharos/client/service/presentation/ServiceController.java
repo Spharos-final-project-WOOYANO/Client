@@ -1,26 +1,25 @@
-//package spharos.client.service.presentation;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//import spharos.client.global.common.response.BaseResponse;
-//
-//@RestController
-//@RequiredArgsConstructor
-//@RequestMapping("/api/v1/service")
-//public class ServiceController {
+package spharos.client.service.presentation;
 
-//    private final SearchService searchService;
-    //↓ 개인 참고용입니다. 무시하셔도 됩니다 ~
-    // ※ private final과 private static final의 차이점 - https://jwdeveloper.tistory.com/179
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import spharos.client.service.application.SearchService;
 
-//    @GetMapping("/house-keeper")
-//    public BaseResponse<?> houseKeeperController(){
-//        searchService.findHouseKeeperServiceList();
-//        return new BaseResponse<>();
-//
-//    }
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/client")
+public class ServiceController {
+
+    private final SearchService searchService;
+
+    @GetMapping("/service")
+    public void houseKeeperController(@RequestParam("type") String serviceType){
+        searchService.findServiceList(serviceType);
+
+
+    }
 //    @GetMapping("/moving-clean")
 //    public BaseResponse<?> movingCleanController(){
 //
@@ -33,4 +32,4 @@
 //    public BaseResponse<?> electronicsCleanController(){
 //
 //    }
-//}
+}
