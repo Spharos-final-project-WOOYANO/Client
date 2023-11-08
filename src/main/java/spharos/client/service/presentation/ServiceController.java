@@ -1,35 +1,23 @@
 package spharos.client.service.presentation;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spharos.client.service.application.SearchService;
-
+import lombok.extern.slf4j.Slf4j;
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/v1/client")
 public class ServiceController {
 
     private final SearchService searchService;
 
     @GetMapping("/service")
-    public void houseKeeperController(@RequestParam("type") String serviceType){
-        searchService.findServiceList(serviceType);
+    public void houseKeeperList(@RequestParam("type") int typeId){
 
+        searchService.findServiceList(typeId);
 
     }
-//    @GetMapping("/moving-clean")
-//    public BaseResponse<?> movingCleanController(){
-//
-//    }
-//    @GetMapping("/office-clean")
-//    public BaseResponse<?> officeCleanController(){
-//
-//    }
-//    @GetMapping("/electronics-clean")
-//    public BaseResponse<?> electronicsCleanController(){
-//
-//    }
+
 }

@@ -7,13 +7,16 @@ import spharos.client.global.common.domain.BaseEnum;
 @Getter
 @AllArgsConstructor
 //Category테이블 중분류 필드 생성을 위한 enum클래스
-public enum ServiceBaseCategoryType implements BaseEnum<Integer, String>{
-    HOUSE_KEEPER(1,"house-keeper"),
-    MOVING(2,"moving-clean"),
-    OFFICE(3,"office-clean"),
-    ELECTRONICS(4,"electronics-clean");
+public enum ServiceBaseCategoryType implements BaseEnum<String, String>{
 
-    private final Integer key;
+//    NOT_APPLICABLE(0,"NOT_APPLICABLE"),
+//    ↑ 0 번은 해당하는 경우가 없는거같아서 주석처리하였습니다.
+
+    HOUSE_KEEPER("HOUSE-KEEPER","house-keeper"),
+    MOVING("MOVING-CLEAN","moving-clean"),
+    OFFICE("OFFICE-CLEAN","office-clean"),
+    ELECTRONICS("ELECTRONICS-CLEAN","electronics-clean");
+
+    private final String key;
     private final String value;
-
 }

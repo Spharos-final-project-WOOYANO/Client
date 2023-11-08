@@ -1,12 +1,10 @@
-package spharos.client.clients.domain;
+package spharos.client.service.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import spharos.client.service.domain.Service;
-
 @Entity
 @Table(name = "service_image")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,12 +19,6 @@ public class ServiceImage {
     private String imgUrl;
     @ManyToOne
     @JoinColumn(name = "service_id")
-    private Service service;
-    public ServiceImage(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
+    private Services service;
 
-    public static ServiceImage createServiceImage(String imgUrl){
-        return new ServiceImage(imgUrl);
-    }
 }

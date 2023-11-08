@@ -33,12 +33,14 @@ public class SecurityConfiguration {
                                 .requestMatchers(org.springframework.web.cors.CorsUtils::isPreFlightRequest)
                                 .permitAll()
                                 .requestMatchers(
+                                        //토큰이 필요없는 경우 : 로그인 상태아닌경우 필요없음
                                         "/error",
                                         "/api/v1/client/join",
                                         "/api/v1/client/login",
                                         "/api/v1/client/email/check",
                                         "/api/v1/client/email/find",
                                         "/api/v1/client/password",
+                                        "/api/v1/client/service",
 
                                         // swagger
                                         "/swagger-ui.html",

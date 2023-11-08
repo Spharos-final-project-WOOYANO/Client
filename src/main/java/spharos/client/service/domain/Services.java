@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "service")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Service {
+public class Services {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class Service {
     @Column(nullable = false,length = 100,name = "area")
     private String area;
 
-    public Service(String logoUrl, String description, String headerImgUrl, String name, String address, String area) {
+    public Services(String logoUrl, String description, String headerImgUrl, String name, String address, String area) {
         this.logoUrl = logoUrl;
         this.description = description;
         this.headerImgUrl = headerImgUrl;
@@ -42,10 +42,10 @@ public class Service {
         this.address = address;
         this.area = area;
     }
-    public static Service createService(String logoUrl,String description,String headerImgUrl
-                                        ,String name,String address,String area){
+    public static Services createService(String logoUrl, String description, String headerImgUrl
+                                        , String name, String address, String area){
     //접근 지정자를 static으로 줘서 외부에서도 접근가능하게 함
-        return new Service(logoUrl,description,headerImgUrl,name,address,area);
+        return new Services(logoUrl,description,headerImgUrl,name,address,area);
         
     }
 

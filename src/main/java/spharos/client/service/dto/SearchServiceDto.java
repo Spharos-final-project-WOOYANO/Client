@@ -11,11 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SearchServiceDto {
 
-        private String logoUrl;
-        private String description;
-        private String headerImgUrl;
+        private String serviceImgUrl;
         private String name;
-        private String address;
-        private String area;
 
 }

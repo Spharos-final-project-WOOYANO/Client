@@ -3,20 +3,24 @@ package spharos.client.service.application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import spharos.client.service.dto.SearchServiceDto;
-import spharos.client.service.infrastructure.ServiceRepository;
-
-import java.util.List;
-
+import spharos.client.service.infrastructure.JPAServiceCategoryRepository;
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class SearchServicelmpl implements SearchService{
 
-    private final ServiceRepository serviceRepository;
+    private final JPAServiceCategoryRepository serviceCategoryRepository;
     @Override
-    public List<SearchServiceDto> findServiceList(String serviceType){
-        serviceRepository.findServiceList(serviceType);
-        return null;
+    public void findServiceList(int typeId){
+
+//        List<ServiceCategory> resultList = serviceCategoryRepository.findServiceIdByCategoryId(typeId);
+//
+//        log.info("result : {}",resultList);
+
+        Long test = serviceCategoryRepository.findCategoryIdEqualServiceId(typeId);
+
+        log.info("test : {}",test);
+
+
     }
 }
