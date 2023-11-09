@@ -27,7 +27,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       format_sql: true
       show-sql: true
 

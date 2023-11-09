@@ -14,9 +14,9 @@ public class ServiceController {
     private final SearchService searchService;
 
     @GetMapping("/service")
-    public void houseKeeperList(@RequestParam("type") int typeId){
-
-        searchService.findServiceList(typeId);
+    public void houseKeeperList(@RequestParam("type") String type){
+        log.info("type : {}",type);
+        searchService.findServiceList(type);
 
     }
 

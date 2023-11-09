@@ -1,7 +1,7 @@
 package spharos.client.service.domain.converter;
 
 import jakarta.persistence.AttributeConverter;
-import spharos.client.service.domain.ServiceCategoryEnum.ServiceSubCategoryType;
+import spharos.client.service.domain.serviceCategoryEnum.ServiceSubCategoryType;
 
 import java.util.EnumSet;
 import java.util.NoSuchElementException;

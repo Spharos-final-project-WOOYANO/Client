@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.NoSuchElementException;
 
 import jakarta.persistence.AttributeConverter;
-import spharos.client.service.domain.ServiceCategoryEnum.ServiceSuperCategoryType;
+import spharos.client.service.domain.serviceCategoryEnum.ServiceSuperCategoryType;
 
 public class SuperTypeConverter implements AttributeConverter<ServiceSuperCategoryType, String> {
 
