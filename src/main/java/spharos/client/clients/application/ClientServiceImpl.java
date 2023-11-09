@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spharos.client.bank.application.BankService;
 import spharos.client.bank.dto.BankRegisterDto;
-import spharos.client.bank.infrastructure.BankRepository;
 import spharos.client.clients.domain.Client;
 import spharos.client.clients.infrastructure.ClientRepository;
 import spharos.client.clients.vo.*;

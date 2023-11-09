@@ -78,6 +78,6 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.register('cleanQuerydsl') {
-	delete file('/build/generated')
+clean {
+	delete file('src/main/generated')
 }

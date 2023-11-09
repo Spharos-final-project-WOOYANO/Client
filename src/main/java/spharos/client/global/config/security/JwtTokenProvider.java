@@ -26,12 +26,15 @@ public class JwtTokenProvider {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${JWT.secret-key}")
+    //yml파일에 설정한 secret-key를 가져옴
     private String secretKey;
 
     @Value("${jwt.expiration-time}")
+    //yml파일에 설정한 expiration-time을 가져옴
     private Long EXPIRATION_TIME;
 
     @Value("${JWT.refresh-expiration-time}")
+    //yml파일에 설정한 refresh-expiration-time을 가져옴
     private Long REFRESH_EXPIRATION_TIME;
 
 
@@ -42,7 +45,7 @@ public class JwtTokenProvider {
      *
      */
     public <T> T extractClaims(String token, Function<Claims, T> claimsResolver){
-        Claims claims = extractAllClaims(token);
+        Claims claims = extractAllClaims(token);//토큰에서 모든 클레임 추출후 claims변수에 담음
         return claimsResolver.apply(claims);
     }
 
@@ -141,6 +144,7 @@ public class JwtTokenProvider {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
+                .claim("role", "CLIENT")
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
