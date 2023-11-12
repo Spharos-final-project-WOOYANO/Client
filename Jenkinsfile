@@ -41,7 +41,7 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                sh 'docker run --network spharos-network -d --name client-service client-service-img:latest'
+                sh 'docker run --network spharos-network -e EUREKA_URL="${EUREKA_URL}" -d --name client-service client-service-img:latest'
             }
         }
     }
