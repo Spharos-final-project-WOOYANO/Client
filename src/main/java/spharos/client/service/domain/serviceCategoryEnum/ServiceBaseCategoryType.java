@@ -10,7 +10,7 @@ import spharos.client.global.common.domain.BaseEnum;
 public enum ServiceBaseCategoryType implements BaseEnum<String, String>{
 
 //    NOT_APPLICABLE(0,"NOT_APPLICABLE"),
-//    ↑ 0 번은 해당하는 경우가 없는거같아서 주석처리하였습니다.
+//    ↑ 0 번은 해당하는 경우가 없는거 같아서 주석처리하였습니다.
 
     HOUSE_KEEPER("1","HOUSE-KEEPER"),
     MOVING("2","MOVING-CLEAN"),
