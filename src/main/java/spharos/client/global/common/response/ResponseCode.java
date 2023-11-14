@@ -21,7 +21,8 @@ public enum ResponseCode {
     LOGIN_FAIL(HttpStatus.BAD_REQUEST, false, 2030,"아이디 또는 비밀번호를 확인해 주세요."),
     WITHDRAW_CLIENT(HttpStatus.BAD_REQUEST, false, 2040,"탈퇴한 회원입니다."),
     DORMANT_CLIENT(HttpStatus.BAD_REQUEST, false, 2050,"휴면 회원입니다."),
-    WAIT_CLIENT(HttpStatus.BAD_REQUEST, false, 2060,"입점 대기중인 회원입니다.");
+    WAIT_CLIENT(HttpStatus.BAD_REQUEST, false, 2060,"입점 대기중인 회원입니다."),
+    CANNOT_FIND_SERVICE(HttpStatus.BAD_REQUEST, false, 2070,"서비스 정보를 찾을 수 없습니다.");
 
 
     private final HttpStatus httpStatus;
