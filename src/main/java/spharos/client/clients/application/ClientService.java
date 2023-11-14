@@ -13,6 +13,6 @@ public interface ClientService {
     // 비밀번호 변경
     void modifyPassword(ClientChangePasswordRequest clientChangePasswordRequest);
     // 로그인
-    ClientLoginOut login(ClientLoginIn clientLoginIn);
+    ClientLoginResponse login(ClientLoginRequest clientLoginRequest);
 
 }

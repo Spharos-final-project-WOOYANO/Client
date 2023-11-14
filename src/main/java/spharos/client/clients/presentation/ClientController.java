@@ -9,7 +9,6 @@ import spharos.client.clients.application.ClientService;
 import spharos.client.clients.vo.*;
 import spharos.client.global.common.response.BaseResponse;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -74,21 +73,16 @@ public class ClientController {
         return new BaseResponse<>();
     }
 
-
-
-
-
-
     /*
         로그인
      */
     @Operation(summary = "로그인", description = "로그인", tags = { "Client Login" })
     @PostMapping("/login")
-    public BaseResponse<?> login(@RequestBody ClientLoginIn ClientLoginIn) {
+    public BaseResponse<?> login(@RequestBody ClientLoginRequest clientLoginRequest) {
 
         // 로그인
-        ClientLoginOut clientLoginOut = clientService.login(ClientLoginIn);
-        return new BaseResponse<>(clientLoginOut);
+        ClientLoginResponse clientLoginResponse = clientService.login(clientLoginRequest);
+        return new BaseResponse<>(clientLoginResponse);
     }
 
 

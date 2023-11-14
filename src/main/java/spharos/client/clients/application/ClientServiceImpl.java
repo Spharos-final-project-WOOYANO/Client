@@ -10,11 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import spharos.client.bank.application.BankService;
 import spharos.client.bank.dto.BankRegisterDto;
 import spharos.client.clients.domain.Client;
+import spharos.client.clients.domain.ClientServiceList;
 import spharos.client.clients.infrastructure.ClientRepository;
+import spharos.client.clients.infrastructure.ClientServiceListRepository;
 import spharos.client.clients.vo.*;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.config.security.JwtTokenProvider;
 import spharos.client.global.exception.CustomException;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -24,6 +29,7 @@ public class ClientServiceImpl implements ClientService {
 
     private final BankService bankService;
     private final ClientRepository clientRepository;
+    private final ClientServiceListRepository clientServiceListRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -103,26 +109,14 @@ public class ClientServiceImpl implements ClientService {
         client.setClientPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
     }
 
-
-
-
-
     // 로그인
     @Override
-    public ClientLoginOut login(ClientLoginIn clientLoginIn) {
-
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        clientLoginIn.getEmail(),
-                        clientLoginIn.getPassword()
-                )
-        );
+    public ClientLoginResponse login(ClientLoginRequest clientLoginRequest) {
 
         // 업체 확인
-        Client client = clientRepository.findByClientId(clientLoginIn.getEmail()).get();
-//                .orElseThrow(() -> new CustomException(ResponseCode.LOGIN_FAIL)); // TODO 발생할 수 없는 예외
+        Client client = clientRepository.findByClientId(clientLoginRequest.getEmail())
+                .orElseThrow(() -> new CustomException(ResponseCode.LOGIN_FAIL));
 
-        // TODO 시큐리티 내부에서 해야 할 일
         // 업체 상태 확인
         if(client.getClientStatus() == 1) {
             // 탈퇴 상태인 경우
@@ -135,13 +129,32 @@ public class ClientServiceImpl implements ClientService {
             throw new CustomException(ResponseCode.WAIT_CLIENT);
         }
 
+        // 아이디와 비밀번호 확인
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        clientLoginRequest.getEmail(),
+                        clientLoginRequest.getPassword()
+                )
+        );
+
         // 토큰발급
         String accessToken = jwtTokenProvider.generateToken(client);
         // 리프레시 토큰 발급 TODO
 //        String refreshToken = jwtTokenProvider.generateRefreshToken(user);
 
-        return ClientLoginOut.builder()
+        // 서비스 정보 가져오기
+        List<ClientServiceList> clientServiceLists = clientServiceListRepository.findByClient(client);
+
+        List<Long> serviceIdList = new ArrayList<>();
+        if(!clientServiceLists.isEmpty()) {
+            serviceIdList = clientServiceLists.stream()
+                    .map(clientServiceList -> clientServiceList.getServices().getId())
+                    .toList();
+        }
+
+        return ClientLoginResponse.builder()
                 .token(accessToken)
+                .serviceIdList(serviceIdList)
                 .build();
     }
 
