@@ -4,6 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import spharos.client.service.application.SearchService;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalDate;
+import java.util.Date;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
@@ -13,10 +17,16 @@ public class ServiceController {
 
     private final SearchService searchService;
 
-    @GetMapping("/service")
-    public void houseKeeperList(@RequestParam("type") String type){
-        log.info("type : {}",type);
-        searchService.findServiceList(type);
+//    @GetMapping("/service")
+//    public void houseKeeperList(@RequestParam("type") String type){
+//        log.info("type : {}",type);
+//        searchService.findServiceList(type);
+//
+//    }
+    @GetMapping("/search")
+    public void searchList(@RequestParam("type") String type , @RequestParam("date") LocalDate date , @RequestParam("region") int region) {
+
+        searchService.findSearchResult(type,date,region);
 
     }
 

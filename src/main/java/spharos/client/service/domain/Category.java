@@ -15,9 +15,9 @@ import spharos.client.service.domain.converter.SuperTypeConverter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "category")
 @ToString
 @Getter
+@Table(name = "category")
 public class Category {
 
     @Id
@@ -43,6 +43,7 @@ public class Category {
         this.baseCategory = baseCategory;
         this.subCategory = subCategory;
     }//정적 팩토리 메서드
+
     public static Category createCategory(ServiceSuperCategoryType superCategory,
                                           ServiceBaseCategoryType baseCategory,
                                           ServiceSubCategoryType subCategory){

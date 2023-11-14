@@ -32,15 +32,22 @@ public class Services {
     private String address;
 
 
-    public Services(String logoUrl, String description, String headerImgUrl, String name, String address) {
+    public Services(String logoUrl,
+                    String description,
+                    String headerImgUrl,
+                    String name,
+                    String address) {
         this.logoUrl = logoUrl;
         this.description = description;
         this.headerImgUrl = headerImgUrl;
         this.name = name;
         this.address = address;
     }
-    public static Services createService(String logoUrl, String description, String headerImgUrl
-                                        , String name, String address){
+    public static Services createService(String logoUrl,
+                                         String description,
+                                         String headerImgUrl,
+                                         String name,
+                                         String address){
     //접근 지정자를 static으로 줘서 외부에서도 접근가능하게 함
         return new Services(logoUrl,description,headerImgUrl,name,address);
         

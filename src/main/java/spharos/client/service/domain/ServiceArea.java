@@ -12,15 +12,25 @@ import lombok.NoArgsConstructor;
 public class ServiceArea {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id")
+    @JoinColumn(nullable = false)
     private Services services;
 
     //서비스 가능지역 코드 column
     @Column(name = "area_code")
     private Integer areaCode;
+
+    public ServiceArea(Services services,
+                       Integer areaCode) {
+        this.services = services;
+        this.areaCode = areaCode;
+    }
+    public static ServiceArea createServiceArea(Services services,
+                                                Integer areaCode) {
+        return new ServiceArea(services, areaCode);
+    }
 
 }

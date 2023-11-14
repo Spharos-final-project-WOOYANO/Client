@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchServiceDto {
 
-        private String serviceImgUrl;
+        private List<String> serviceImgUrl;
         private String name;
 
 }
