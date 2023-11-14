@@ -1,4 +1,4 @@
-package spharos.client.service.domain;
+package spharos.client.service.domain.category;
 
 import jakarta.persistence.*;
 
@@ -6,12 +6,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import spharos.client.service.domain.serviceCategoryEnum.ServiceBaseCategoryType;
-import spharos.client.service.domain.serviceCategoryEnum.ServiceSubCategoryType;
-import spharos.client.service.domain.serviceCategoryEnum.ServiceSuperCategoryType;
-import spharos.client.service.domain.converter.BaseTypeConverter;
-import spharos.client.service.domain.converter.SubTypeConverter;
-import spharos.client.service.domain.converter.SuperTypeConverter;
+import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
+import spharos.client.service.domain.category.enumType.ServiceSubCategoryType;
+import spharos.client.service.domain.category.enumType.ServiceSuperCategoryType;
+import spharos.client.service.domain.category.converter.BaseTypeConverter;
+import spharos.client.service.domain.category.converter.SubTypeConverter;
+import spharos.client.service.domain.category.converter.SuperTypeConverter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

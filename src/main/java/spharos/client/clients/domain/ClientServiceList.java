@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import spharos.client.service.domain.Services;
+import spharos.client.service.domain.services.Services;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

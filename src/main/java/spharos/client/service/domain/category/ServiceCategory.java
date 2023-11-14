@@ -1,10 +1,10 @@
-package spharos.client.service.domain;
+package spharos.client.service.domain.category;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import spharos.client.service.domain.services.Services;
 
 @Entity
 @Getter

@@ -1,4 +1,4 @@
-package spharos.client.service.domain;
+package spharos.client.service.domain.services;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

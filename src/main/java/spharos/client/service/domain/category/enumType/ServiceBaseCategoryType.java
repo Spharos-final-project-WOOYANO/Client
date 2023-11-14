@@ -1,4 +1,4 @@
-package spharos.client.service.domain.serviceCategoryEnum;
+package spharos.client.service.domain.category.enumType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

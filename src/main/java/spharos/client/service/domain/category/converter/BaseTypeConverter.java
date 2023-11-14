@@ -1,9 +1,9 @@
-package spharos.client.service.domain.converter;
+package spharos.client.service.domain.category.converter;
 
 import java.util.EnumSet;
 import java.util.NoSuchElementException;
 import jakarta.persistence.AttributeConverter;
-import spharos.client.service.domain.serviceCategoryEnum.ServiceBaseCategoryType;
+import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 
 public class BaseTypeConverter implements AttributeConverter<ServiceBaseCategoryType, String> {
 

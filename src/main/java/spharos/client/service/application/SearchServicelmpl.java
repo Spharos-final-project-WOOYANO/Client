@@ -3,10 +3,10 @@ package spharos.client.service.application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import spharos.client.service.domain.converter.BaseTypeConverter;
-import spharos.client.service.domain.serviceCategoryEnum.ServiceBaseCategoryType;
+import spharos.client.service.domain.category.converter.BaseTypeConverter;
+import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 import spharos.client.service.infrastructure.ServiceAreaRepository;
-import spharos.client.service.infrastructure.JPAServiceCategoryRepository;
+import spharos.client.service.infrastructure.ServiceCategoryRepository;
 import spharos.client.service.infrastructure.SearchRepository;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchServicelmpl implements SearchService{
 
-    private final JPAServiceCategoryRepository serviceCategoryRepository;
+    private final ServiceCategoryRepository serviceCategoryRepository;
     private final ServiceAreaRepository serviceAreaRepository;
     private final SearchRepository searchRepository;
     @Override
