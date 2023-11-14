@@ -31,21 +31,18 @@ public class Services {
     @Column(nullable = false,length = 50,name = "address")
     private String address;
 
-    @Column(nullable = false,length = 100,name = "area")
-    private String area;
 
-    public Services(String logoUrl, String description, String headerImgUrl, String name, String address, String area) {
+    public Services(String logoUrl, String description, String headerImgUrl, String name, String address) {
         this.logoUrl = logoUrl;
         this.description = description;
         this.headerImgUrl = headerImgUrl;
         this.name = name;
         this.address = address;
-        this.area = area;
     }
     public static Services createService(String logoUrl, String description, String headerImgUrl
-                                        , String name, String address, String area){
+                                        , String name, String address){
     //접근 지정자를 static으로 줘서 외부에서도 접근가능하게 함
-        return new Services(logoUrl,description,headerImgUrl,name,address,area);
+        return new Services(logoUrl,description,headerImgUrl,name,address);
         
     }
 

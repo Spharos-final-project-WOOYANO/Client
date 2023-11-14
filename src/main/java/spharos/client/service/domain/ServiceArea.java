@@ -15,7 +15,7 @@ public class ServiceArea {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
     private Services services;
 
