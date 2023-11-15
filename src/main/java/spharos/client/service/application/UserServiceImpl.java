@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
-import spharos.client.service.domain.Services;
 import spharos.client.service.infrastructure.ServicesRepository;
 import spharos.client.service.vo.response.UserRecentServiceResponse;
 
