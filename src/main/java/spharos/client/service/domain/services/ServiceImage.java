@@ -1,4 +1,4 @@
-package spharos.client.service.domain;
+package spharos.client.service.domain.services;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -15,10 +15,21 @@ public class ServiceImage {
     @Id
     @GeneratedValue
     private Long id;
+
     @Column(nullable = false,length = 255,name = "img_url")
     private String imgUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id")
+    @JoinColumn(nullable = false)
     private Services service;
 
+    public ServiceImage(String imgUrl,
+                        Services service) {
+        this.imgUrl = imgUrl;
+        this.service = service;
+    }
+    public static ServiceImage createServiceImage(String imgUrl,
+                                                  Services service) {
+        return new ServiceImage(imgUrl, service);
+    }
 }

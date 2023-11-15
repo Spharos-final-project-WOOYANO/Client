@@ -1,10 +1,10 @@
-package spharos.client.service.domain.converter;
+package spharos.client.service.domain.category.converter;
 
 import java.util.EnumSet;
 import java.util.NoSuchElementException;
 
 import jakarta.persistence.AttributeConverter;
-import spharos.client.service.domain.serviceCategoryEnum.ServiceSuperCategoryType;
+import spharos.client.service.domain.category.enumType.ServiceSuperCategoryType;
 
 public class SuperTypeConverter implements AttributeConverter<ServiceSuperCategoryType, String> {
 
