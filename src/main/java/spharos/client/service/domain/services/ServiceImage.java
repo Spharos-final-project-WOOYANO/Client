@@ -13,7 +13,7 @@ import lombok.ToString;
 public class ServiceImage {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false,length = 255,name = "img_url")
