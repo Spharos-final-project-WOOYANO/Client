@@ -23,6 +23,7 @@ pipeline {
                         pwd
                         chmod +x ./gradlew
                         ./gradlew clean build
+
                     '''
 
                 }
