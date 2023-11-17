@@ -16,19 +16,19 @@ public class Worker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 30, name = "worker_name")
+    @Column(nullable = false, length = 20, name = "name")
     private String name;
 
-    @Column(nullable = false, length = 20, name = "worker_phone")
+    @Column(nullable = false, length = 20, name = "phone")
     private String phone;
 
-    @Column(nullable = false, length = 50, name = "worker_description")
+    @Column(nullable = false, length = 255, name = "description")
     private String description;
 
-    @Column(nullable = false, length = 50, name = "worker_img_url")
+    @Column(nullable = false, length = 255, name = "img_url")
     private String imgUrl;
 
-    @Column(nullable = false, length = 50, name = "worker_status")
+    @Column(nullable = false, length = 20, name = "status")
     private Integer status;
 
     @ManyToOne(fetch = FetchType.LAZY)

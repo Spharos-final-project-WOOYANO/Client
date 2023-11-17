@@ -5,7 +5,6 @@ import lombok.Getter;
 import spharos.client.global.common.domain.BaseEnum;
 
 @Getter
-@AllArgsConstructor
 //Category테이블 중분류 필드 생성을 위한 enum클래스
 public enum ServiceBaseCategoryType implements BaseEnum<String, String>{
 
@@ -19,4 +18,9 @@ public enum ServiceBaseCategoryType implements BaseEnum<String, String>{
 
     private final String key;
     private final String value;
+
+    ServiceBaseCategoryType(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
 }

@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+import spharos.client.service.domain.services.Services;
+import spharos.client.service.domain.worker.enumType.DayOfWeekType;
+import java.time.LocalTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,23 +15,36 @@ import java.time.LocalDateTime;
 public class WorkerSchedule {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private WorkerDaliyTask workerDaliyTask;
+    private Services service;
+
+    @Column(nullable = false, length = 20, name = "day_of_week")
+    private DayOfWeekType dayOfWeek;
 
     @Column(nullable = false, length = 20, name = "start_time")
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
-    @Column(nullable = false, length = 20, name = "reservation_possible_status")
-    private Boolean reservationPossibleStatus;
+    @Column(nullable = false, length = 20, name = "last_time")
+    private LocalTime lastTime;
 
-    public WorkerSchedule(LocalDateTime startTime,
-                          Boolean reservationPossibleStatus) {
+    public WorkerSchedule(Services service,
+                          DayOfWeekType dayOfWeek,
+                          LocalTime startTime,
+                          LocalTime lastTime) {
+        this.service = service;
+        this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
-        this.reservationPossibleStatus = reservationPossibleStatus;
+        this.lastTime = lastTime;
     }
-    public static WorkerSchedule createWorkerSchedule(LocalDateTime startTime,
-                                                      Boolean reservationPossibleStatus) {
-        return new WorkerSchedule(startTime, reservationPossibleStatus);
+    public static WorkerSchedule createWorkerSchedule(Services service,
+                                                      DayOfWeekType dayOfWeek,
+                                                      LocalTime startTime,
+                                                      LocalTime lastTime) {
+        return new WorkerSchedule(service, dayOfWeek, startTime, lastTime);
     }
+
 }
