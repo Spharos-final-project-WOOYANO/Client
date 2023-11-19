@@ -1,4 +1,4 @@
-package spharos.client.clients.vo;
+package spharos.client.clients.vo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ClientLoginResponse {
 
     private String token;
-    private String clientId;
+    private String email;
     private List<Long> serviceIdList;
 
 }

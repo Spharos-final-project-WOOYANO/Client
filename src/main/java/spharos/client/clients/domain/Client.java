@@ -64,6 +64,15 @@ public class Client extends BaseEntity implements UserDetails {
         this.clientPassword = clientPassword;
     }
 
+    // 업체 수정
+    public void modifyClient(String ceoName, String clientName, String clientPhone,
+                           String clientAddress) {
+        this.ceoName = ceoName;
+        this.clientName = clientName;
+        this.clientPhone = clientPhone;
+        this.clientAddress = clientAddress;
+    }
+
     // 시큐리티 관련
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
