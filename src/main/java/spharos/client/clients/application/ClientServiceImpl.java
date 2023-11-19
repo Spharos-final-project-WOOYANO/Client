@@ -13,7 +13,12 @@ import spharos.client.clients.domain.Client;
 import spharos.client.clients.domain.ClientServiceList;
 import spharos.client.clients.infrastructure.ClientRepository;
 import spharos.client.clients.infrastructure.ClientServiceListRepository;
-import spharos.client.clients.vo.*;
+import spharos.client.clients.vo.request.ClientChangePasswordRequest;
+import spharos.client.clients.vo.request.ClientLoginRequest;
+import spharos.client.clients.vo.request.ClientSignUpRequest;
+import spharos.client.clients.vo.response.ClientExistCheckResponse;
+import spharos.client.clients.vo.response.ClientFindEmailResponse;
+import spharos.client.clients.vo.response.ClientLoginResponse;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.config.security.JwtTokenProvider;
 import spharos.client.global.exception.CustomException;
@@ -156,6 +161,25 @@ public class ClientServiceImpl implements ClientService {
                 .token(accessToken)
                 .serviceIdList(serviceIdList)
                 .build();
+    }
+
+    // 사업자 번호와 이메일로 해당하는 업체가 존재하는지 체크
+    @Override
+    public Boolean checkClientExist(String registrationNumber, String email) {
+
+        Optional<Client> client = clientRepository.findByClientId(email);
+
+        // 해당 이메일이 DB에 존재하는지 확인
+        if(client.isEmpty()) {
+            return Boolean.FALSE;
+        }
+
+        // 사업자 번호가 일치하는지 확인
+        if(!client.get().getClientRegistrationNumber().equals(registrationNumber)) {
+            return Boolean.FALSE;
+        }
+
+        return Boolean.TRUE;
     }
 
 

@@ -1,4 +1,4 @@
-package spharos.client.clients.vo;
+package spharos.client.clients.vo.request;
 
 import lombok.Getter;
 

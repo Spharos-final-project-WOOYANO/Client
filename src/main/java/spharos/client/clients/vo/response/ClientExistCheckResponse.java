@@ -1,4 +1,4 @@
-package spharos.client.clients.vo;
+package spharos.client.clients.vo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientFindEmailResponse {
+public class ClientExistCheckResponse {
 
-    private String email;
+    private Boolean checkResult;
 
 }

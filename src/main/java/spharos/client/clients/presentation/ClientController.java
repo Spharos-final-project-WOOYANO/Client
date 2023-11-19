@@ -6,7 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import spharos.client.clients.application.ClientService;
-import spharos.client.clients.vo.*;
+import spharos.client.clients.vo.request.ClientChangePasswordRequest;
+import spharos.client.clients.vo.request.ClientLoginRequest;
+import spharos.client.clients.vo.request.ClientSignUpRequest;
+import spharos.client.clients.vo.response.ClientEmailCheckResponse;
+import spharos.client.clients.vo.response.ClientExistCheckResponse;
+import spharos.client.clients.vo.response.ClientFindEmailResponse;
+import spharos.client.clients.vo.response.ClientLoginResponse;
 import spharos.client.global.common.response.BaseResponse;
 
 @Slf4j
@@ -83,6 +89,25 @@ public class ClientController {
         // 로그인
         ClientLoginResponse clientLoginResponse = clientService.login(clientLoginRequest);
         return new BaseResponse<>(clientLoginResponse);
+    }
+
+    /*
+        사업자 번호와 이메일로 해당하는 업체가 존재하는지 체크
+     */
+    @Operation(summary = "사업자 번호와 이메일로 해당하는 업체가 존재하는지 체크",
+            description = "사업자 번호와 이메일로 해당하는 업체가 존재하는지 체크",
+            tags = { "Client ChangePassword" })
+    @GetMapping("/exist/check")
+    public BaseResponse<?> checkClientExist(@RequestParam("registrationNumber") String registrationNumber,
+                                     @RequestParam("email") String email) {
+
+        // 사업자 번호와 이메일로 해당하는 업체가 존재하는지 체크
+        Boolean checkResult = clientService.checkClientExist(registrationNumber, email);
+
+        ClientExistCheckResponse response = ClientExistCheckResponse.builder()
+                .checkResult(checkResult)
+                .build();
+        return new BaseResponse<>(response);
     }
 
 
