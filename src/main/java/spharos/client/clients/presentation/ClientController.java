@@ -6,13 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import spharos.client.clients.application.ClientService;
-import spharos.client.clients.vo.request.ClientChangePasswordRequest;
-import spharos.client.clients.vo.request.ClientLoginRequest;
-import spharos.client.clients.vo.request.ClientSignUpRequest;
-import spharos.client.clients.vo.response.ClientEmailCheckResponse;
-import spharos.client.clients.vo.response.ClientExistCheckResponse;
-import spharos.client.clients.vo.response.ClientFindEmailResponse;
-import spharos.client.clients.vo.response.ClientLoginResponse;
+import spharos.client.clients.dto.ChangePasswordDto;
+import spharos.client.clients.vo.request.*;
+import spharos.client.clients.vo.response.*;
 import spharos.client.global.common.response.BaseResponse;
 
 @Slf4j
@@ -72,10 +68,15 @@ public class ClientController {
      */
     @Operation(summary = "비밀번호변경", description = "비밀번호변경(로그인전)", tags = { "Client ChangePassword" })
     @PutMapping("/password")
-    public BaseResponse<?> changePassword(@RequestBody ClientChangePasswordRequest clientChangePasswordRequest) {
+    public BaseResponse<?> changePassword(@RequestBody ClientChangePasswordRequest request) {
+
+        ChangePasswordDto dto = ChangePasswordDto.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .build();
 
         // 비밀번호 변경
-        clientService.modifyPassword(clientChangePasswordRequest);
+        clientService.modifyPassword(dto);
         return new BaseResponse<>();
     }
 
@@ -110,6 +111,52 @@ public class ClientController {
         return new BaseResponse<>(response);
     }
 
+    /*
+        업체 회원 정보 조회
+     */
+    @Operation(summary = "업체 회원 정보 조회",
+            description = "업체 회원 정보 조회",
+            tags = { "Client Mypage" })
+    @GetMapping("")
+    public BaseResponse<?> getClient(@RequestHeader("email") String email) {
 
+        // 업체 회원 정보 조회
+        ClientInformationResponse response = clientService.getClientInformation(email);
+        return new BaseResponse<>(response);
+    }
+
+    /*
+        업체 회원 정보 수정
+     */
+    @Operation(summary = "업체 회원 정보 수정",
+            description = "업체 회원 정보 수정",
+            tags = { "Client Mypage" })
+    @PutMapping("")
+    public BaseResponse<?> modifyClient(@RequestHeader("email") String email,
+                                        @RequestBody ClientModifyRequest request) {
+        // 업체 회원 정보 수정
+        clientService.modifyClient(email, request);
+        return new BaseResponse<>();
+    }
+
+    /*
+        비밀번호 변경 - 마이페이지
+     */
+    @Operation(summary = "비밀번호 변경",
+            description = "비밀번호 변경",
+            tags = { "Client Mypage" })
+    @PutMapping("/mypage/password")
+    public BaseResponse<?> modifyPassword(@RequestHeader("email") String email,
+                                          @RequestBody ClientMypageChangePasswordRequest request) {
+
+        ChangePasswordDto dto = ChangePasswordDto.builder()
+                .email(email)
+                .password(request.getPassword())
+                .build();
+
+        // 비밀번호 변경
+        clientService.modifyPassword(dto);
+        return new BaseResponse<>();
+    }
 
 }

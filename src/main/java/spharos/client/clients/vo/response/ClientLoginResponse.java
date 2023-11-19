@@ -14,7 +14,7 @@ import java.util.List;
 public class ClientLoginResponse {
 
     private String token;
-    private String clientId;
+    private String email;
     private List<Long> serviceIdList;
 
 }

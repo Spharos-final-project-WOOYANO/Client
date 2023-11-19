@@ -11,13 +11,14 @@ import spharos.client.bank.application.BankService;
 import spharos.client.bank.dto.BankRegisterDto;
 import spharos.client.clients.domain.Client;
 import spharos.client.clients.domain.ClientServiceList;
+import spharos.client.clients.dto.ChangePasswordDto;
 import spharos.client.clients.infrastructure.ClientRepository;
 import spharos.client.clients.infrastructure.ClientServiceListRepository;
-import spharos.client.clients.vo.request.ClientChangePasswordRequest;
 import spharos.client.clients.vo.request.ClientLoginRequest;
+import spharos.client.clients.vo.request.ClientModifyRequest;
 import spharos.client.clients.vo.request.ClientSignUpRequest;
-import spharos.client.clients.vo.response.ClientExistCheckResponse;
 import spharos.client.clients.vo.response.ClientFindEmailResponse;
+import spharos.client.clients.vo.response.ClientInformationResponse;
 import spharos.client.clients.vo.response.ClientLoginResponse;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.config.security.JwtTokenProvider;
@@ -104,14 +105,14 @@ public class ClientServiceImpl implements ClientService {
     // 비밀번호 변경
     @Override
     @Transactional
-    public void modifyPassword(ClientChangePasswordRequest request) {
+    public void modifyPassword(ChangePasswordDto dto) {
 
         // 비밀번호를 변경할 업체 확인
-        Client client = clientRepository.findByClientId(request.getEmail())
+        Client client = clientRepository.findByClientId(dto.getEmail())
                 .orElseThrow(() -> new CustomException(ResponseCode.CANNOT_FIND_CLIENT));
 
         // 비밀번호 변경
-        client.setClientPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+        client.setClientPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
     }
 
     // 로그인
@@ -159,6 +160,7 @@ public class ClientServiceImpl implements ClientService {
 
         return ClientLoginResponse.builder()
                 .token(accessToken)
+                .email(client.getClientId())
                 .serviceIdList(serviceIdList)
                 .build();
     }
@@ -180,6 +182,38 @@ public class ClientServiceImpl implements ClientService {
         }
 
         return Boolean.TRUE;
+    }
+
+    // 업체 회원 정보 조회
+    @Override
+    public ClientInformationResponse getClientInformation(String email) {
+
+        // 이메일로 업체 회원 정보 조회
+        Client client = clientRepository.findByClientId(email)
+                .orElseThrow(() -> new CustomException(ResponseCode.CANNOT_FIND_CLIENT));
+
+        return ClientInformationResponse.builder()
+                .clientId(client.getClientId())
+                .ceoName(client.getCeoName())
+                .clientName(client.getClientName())
+                .clientPhone(client.getClientPhone())
+                .clientAddress(client.getClientAddress())
+                .clientRegistrationNumber(client.getClientRegistrationNumber())
+                .build();
+    }
+
+    // 업체 회원 정보 수정
+    @Override
+    @Transactional
+    public void modifyClient(String email, ClientModifyRequest request) {
+
+        // 이메일로 업체 회원 정보 조회
+        Client client = clientRepository.findByClientId(email)
+                .orElseThrow(() -> new CustomException(ResponseCode.CANNOT_FIND_CLIENT));
+
+        // 업체 정보 수정
+        client.modifyClient(request.getCeoName(), request.getClientName(), request.getClientPhone(),
+                request.getClientAddress());
     }
 
 
