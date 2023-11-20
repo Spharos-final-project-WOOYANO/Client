@@ -10,13 +10,18 @@ import spharos.client.clients.infrastructure.ClientRepository;
 import spharos.client.clients.infrastructure.ClientServiceListRepository;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
+import spharos.client.service.domain.services.ServiceArea;
 import spharos.client.service.domain.services.ServiceImage;
 import spharos.client.service.domain.services.Services;
+import spharos.client.service.infrastructure.ServiceAreaRepository;
 import spharos.client.service.infrastructure.ServiceImageRepository;
 import spharos.client.service.infrastructure.ServicesRepository;
 import spharos.client.service.vo.request.ClientModifyServiceRequest;
 import spharos.client.service.vo.request.ClientRegisterServiceRequest;
+import spharos.client.service.vo.request.ServiceAreaModifyRequest;
+import spharos.client.service.vo.request.ServiceAreaRegisterRequest;
 import spharos.client.service.vo.response.ClientServiceResponse;
+import spharos.client.service.vo.response.ServiceAreaResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +35,7 @@ public class ClientMypageServiceImpl implements ClientMypageService {
     private final ServiceImageRepository serviceImageRepository;
     private final ClientRepository clientRepository;
     private final ClientServiceListRepository clientServiceListRepository;
+    private final ServiceAreaRepository serviceAreaRepository;
 
     // 매장정보 조회
     @Override
@@ -116,6 +122,67 @@ public class ClientMypageServiceImpl implements ClientMypageService {
         // 서비스를 수정
         services.modifyService(request.getLogoUrl(), request.getLogoUrl(), request.getHeaderImgUrl(),
                 request.getName(), request.getAddress());
+    }
+
+    // 서비스 가능 지역 등록
+    @Override
+    @Transactional
+    public void registerServiceArea(ServiceAreaRegisterRequest request) {
+
+        // 서비스 조회
+        Services services = servicesRepository.findById(request.getServiceId())
+                .orElseThrow(() -> new CustomException(ResponseCode.CANNOT_FIND_SERVICE));
+
+        // 지역코드 수 만큼 등록
+        for(Integer areaCode : request.getAreaCodeList()) {
+            ServiceArea serviceArea = ServiceArea.createServiceArea(services, areaCode);
+            serviceAreaRepository.save(serviceArea);
+        }
+    }
+
+    // 서비스 가능 지역 조회
+    @Override
+    public ServiceAreaResponse getServiceArea(Long serviceId) {
+
+        // 서비스 조회
+        Services services = servicesRepository.findById(serviceId)
+                .orElseThrow(() -> new CustomException(ResponseCode.CANNOT_FIND_SERVICE));
+
+        // 서비스 가능 지역코드를 조회
+        List<ServiceArea> serviceAreaList = serviceAreaRepository.findByServices(services);
+
+        List<Integer> areaCodeList = new ArrayList<>();
+        if(!serviceAreaList.isEmpty()) {
+            areaCodeList = serviceAreaList.stream()
+                    .map(ServiceArea::getAreaCode)
+                    .toList();
+        }
+
+        return ServiceAreaResponse.builder()
+                .areaCodeList(areaCodeList)
+                .build();
+    }
+
+    // 서비스 가능 지역 수정
+    @Override
+    @Transactional
+    public void modifyService(ServiceAreaModifyRequest request) {
+
+        // 서비스 조회
+        Services services = servicesRepository.findById(request.getServiceId())
+                .orElseThrow(() -> new CustomException(ResponseCode.CANNOT_FIND_SERVICE));
+
+        // 기존에 등록되어 있는 코드를 삭제
+        List<ServiceArea> serviceImageList = serviceAreaRepository.findByServices(services);
+        for(ServiceArea serviceArea : serviceImageList) {
+            serviceAreaRepository.delete(serviceArea);
+        }
+
+        // 새로 코드를 등록
+        for(Integer areaCode : request.getAreaCodeList()) {
+            ServiceArea serviceArea = ServiceArea.createServiceArea(services, areaCode);
+            serviceAreaRepository.save(serviceArea);
+        }
     }
 
 }
