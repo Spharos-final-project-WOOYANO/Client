@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spharos.client.service.domain.services.Services;
 import spharos.client.service.domain.worker.enumType.DayOfWeekType;
+
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
@@ -23,28 +25,35 @@ public class WorkerSchedule {
     private Services service;
 
     @Column(nullable = false, length = 20, name = "day_of_week")
-    private DayOfWeekType dayOfWeek;
+    private DayOfWeek dayOfWeek;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private Worker worker;
 
     @Column(nullable = false, length = 20, name = "start_time")
-    private LocalTime startTime;
+    private LocalTime serviceStartTime;
 
     @Column(nullable = false, length = 20, name = "last_time")
-    private LocalTime lastTime;
+    private LocalTime serviceFinishTime;
 
     public WorkerSchedule(Services service,
-                          DayOfWeekType dayOfWeek,
-                          LocalTime startTime,
-                          LocalTime lastTime) {
+                          Worker worker,
+                          DayOfWeek dayOfWeek,
+                          LocalTime serviceStartTime,
+                          LocalTime serviceFinishTime) {
         this.service = service;
+        this.worker = worker;
         this.dayOfWeek = dayOfWeek;
-        this.startTime = startTime;
-        this.lastTime = lastTime;
+        this.serviceStartTime = serviceStartTime;
+        this.serviceFinishTime = serviceFinishTime;
     }
     public static WorkerSchedule createWorkerSchedule(Services service,
-                                                      DayOfWeekType dayOfWeek,
-                                                      LocalTime startTime,
-                                                      LocalTime lastTime) {
-        return new WorkerSchedule(service, dayOfWeek, startTime, lastTime);
+                                                      Worker worker,
+                                                      DayOfWeek dayOfWeek,
+                                                      LocalTime serviceStartTime,
+                                                      LocalTime serviceFinishTime) {
+        return new WorkerSchedule(service,worker, dayOfWeek, serviceStartTime, serviceFinishTime);
     }
 
 }
