@@ -2,7 +2,8 @@ package spharos.client.service.application;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface SearchService {
-    void findSearchResult(String type, LocalDate date, int region) throws ParseException;
+    List<Long> findSearchResult(String type, LocalDate date, int region) throws ParseException;
 }
