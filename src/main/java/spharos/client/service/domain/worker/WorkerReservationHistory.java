@@ -36,12 +36,15 @@ public class WorkerReservationHistory {
     @JoinColumn(nullable = false)
     private Worker worker;
 
-    public WorkerReservationHistory(Long reservationId,
+
+    public WorkerReservationHistory(Long id,
+                                    Long reservationId,
                                     LocalDate reservationDate,
                                     LocalTime startTime,
                                     LocalTime endTime,
                                     Integer serviceTime,
                                     Worker worker) {
+        this.id = id;
         this.reservationId = reservationId;
         this.reservationDate = reservationDate;
         this.startTime = startTime;
@@ -50,12 +53,13 @@ public class WorkerReservationHistory {
         this.worker = worker;
     }
 
-    public static WorkerReservationHistory createWorkerReservationHistory(Long reservationId,
+    public static WorkerReservationHistory createWorkerReservationHistory(Long id,
+                                                                          Long reservationId,
                                                                           LocalDate reservationDate,
                                                                           LocalTime startTime,
                                                                           LocalTime endTime,
                                                                           Integer serviceTime,
                                                                           Worker worker) {
-        return new WorkerReservationHistory(reservationId, reservationDate, startTime, endTime, serviceTime,worker);
+        return new WorkerReservationHistory(id,reservationId, reservationDate, startTime, endTime, serviceTime,worker);
     }
 }

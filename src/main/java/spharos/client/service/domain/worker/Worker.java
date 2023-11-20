@@ -35,12 +35,14 @@ public class Worker {
     @JoinColumn(nullable = false)
     private Services service;
 
-    public Worker(String name,
+    public Worker(Long id,
+                  String name,
                   String phone,
                   String description,
                   String imgUrl,
                   Integer status,
                   Services service) {
+        this.id = id;
         this.name = name;
         this.phone = phone;
         this.description = description;
@@ -49,12 +51,13 @@ public class Worker {
         this.service = service;
     }
 
-    public static Worker createWorker(String name,
+    public static Worker createWorker(Long id,
+                                      String name,
                                       String phone,
                                       String description,
                                       String imgUrl,
                                       Integer status,
                                       Services service) {
-        return new Worker(name, phone, description, imgUrl, status, service);
+        return new Worker(id,name, phone, description, imgUrl, status, service);
     }
 }
