@@ -23,11 +23,13 @@ public class ServiceController {
 //        searchService.findServiceList(type);
 //
 //    }
-    @GetMapping("/search")
-    public void searchList(@RequestParam("type") String type , @RequestParam("date") LocalDate date , @RequestParam("region") int region) throws ParseException {
-
+    @GetMapping("/search") // required=false 옵션으로 해당 requestParam이 null일 경우에도 정상적으로 동작하도록 설정
+    public void searchList(@RequestParam("type") String type , @RequestParam(value="date",required=false) LocalDate date , @RequestParam("region") Integer region) throws ParseException {
+        log.info("type : {}",type);
         List<Long> possibleServiceIdList = searchService.findSearchResult(type,date,region);
+        log.info("Controller-possibleServiceIdList : {}", possibleServiceIdList.size());
 
     }
+
 
 }

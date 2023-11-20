@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spharos.client.service.domain.services.Services;
-import java.time.DayOfWeek;
+import spharos.client.service.domain.worker.enumType.DayOfWeekType;
 import java.time.LocalTime;
 
 @Entity
@@ -23,9 +23,9 @@ public class WorkerSchedule {
     private Services service;
 
     @Column(nullable = false, length = 20, name = "day_of_week")
-    private DayOfWeek dayOfWeek;
+    private DayOfWeekType dayOfWeek;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Worker worker;
 
@@ -37,7 +37,7 @@ public class WorkerSchedule {
 
     public WorkerSchedule(Services service,
                           Worker worker,
-                          DayOfWeek dayOfWeek,
+                          DayOfWeekType dayOfWeek,
                           LocalTime serviceStartTime,
                           LocalTime serviceFinishTime) {
         this.service = service;
@@ -48,7 +48,7 @@ public class WorkerSchedule {
     }
     public static WorkerSchedule createWorkerSchedule(Services service,
                                                       Worker worker,
-                                                      DayOfWeek dayOfWeek,
+                                                      DayOfWeekType dayOfWeek,
                                                       LocalTime serviceStartTime,
                                                       LocalTime serviceFinishTime) {
         return new WorkerSchedule(service,worker, dayOfWeek, serviceStartTime, serviceFinishTime);

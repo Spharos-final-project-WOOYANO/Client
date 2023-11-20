@@ -16,7 +16,7 @@ public class ServiceArea {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "service_id")
     private Services services;
 
     //서비스 가능지역 코드 column

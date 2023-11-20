@@ -1,6 +1,5 @@
 package spharos.client.service.domain.category.enumType;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import spharos.client.global.common.domain.BaseEnum;
 

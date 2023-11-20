@@ -12,7 +12,7 @@ public class BaseTypeConverter implements AttributeConverter<ServiceBaseCategory
         return attribute.getKey();
     }
 
-    @Override//DB에 저장되어 있는 데이터 값으로 현재 데이터를 변환함
+    @Override//DB에 저장되어 있는 데이터 값으로 '현재 데이터를' 변환함
     public ServiceBaseCategoryType convertToEntityAttribute(String requestData) {
         return EnumSet.allOf(ServiceBaseCategoryType.class).stream()
                 //↓ Enum클래스에서 getKey로 모든 키를 가져온뒤 파라미터로 받아온 값과 일치하는 키를 찾는다.
