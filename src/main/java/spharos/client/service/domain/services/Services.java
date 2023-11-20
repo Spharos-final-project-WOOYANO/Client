@@ -53,4 +53,14 @@ public class Services {
         
     }
 
+    // 서비스 수정
+    public void modifyService(String logoUrl, String description, String headerImgUrl,
+                             String name, String address) {
+        this.logoUrl = logoUrl;
+        this.description = description;
+        this.headerImgUrl = headerImgUrl;
+        this.name = name;
+        this.address = address;
+    }
+
 }

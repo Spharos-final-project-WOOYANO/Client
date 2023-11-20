@@ -22,4 +22,13 @@ public class ClientServiceList {
     @JoinColumn(nullable = false, name = "client_id")
     private Client client;
 
+    private ClientServiceList(Services services, Client client) {
+        this.services = services;
+        this.client = client;
+    }
+
+    public static ClientServiceList createClientServiceList(Services services, Client client) {
+        return new ClientServiceList(services, client);
+    }
+
 }
