@@ -17,9 +17,6 @@ public class WorkerReservationHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20, name = "worker_id")
-    private Long workerId;
-
     @Column(nullable = false, length = 20, name = "reservation_id")
     private Long reservationId;
 
@@ -39,26 +36,26 @@ public class WorkerReservationHistory {
     @JoinColumn(nullable = false)
     private Worker worker;
 
-    public WorkerReservationHistory(Long workerId,
-                                    Long reservationId,
+    public WorkerReservationHistory(Long reservationId,
                                     LocalDate reservationDate,
                                     LocalTime startTime,
                                     LocalTime endTime,
-                                    Integer serviceTime) {
-        this.workerId = workerId;
+                                    Integer serviceTime,
+                                    Worker worker) {
         this.reservationId = reservationId;
         this.reservationDate = reservationDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.serviceTime = serviceTime;
+        this.worker = worker;
     }
 
-    public static WorkerReservationHistory createWorkerReservationHistory(Long workerId,
-                                                                          Long reservationId,
+    public static WorkerReservationHistory createWorkerReservationHistory(Long reservationId,
                                                                           LocalDate reservationDate,
                                                                           LocalTime startTime,
                                                                           LocalTime endTime,
-                                                                          Integer serviceTime) {
-        return new WorkerReservationHistory(workerId, reservationId, reservationDate, startTime, endTime, serviceTime);
+                                                                          Integer serviceTime,
+                                                                          Worker worker) {
+        return new WorkerReservationHistory(reservationId, reservationDate, startTime, endTime, serviceTime,worker);
     }
 }
