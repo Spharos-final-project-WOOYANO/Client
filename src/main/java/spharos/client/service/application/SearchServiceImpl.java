@@ -3,17 +3,20 @@ package spharos.client.service.application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import spharos.client.global.common.response.ResponseCode;
+import spharos.client.global.exception.CustomException;
 import spharos.client.service.domain.category.converter.BaseTypeConverter;
 import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 import spharos.client.service.domain.services.ServiceArea;
+import spharos.client.service.domain.services.ServiceImage;
+import spharos.client.service.domain.services.Services;
 import spharos.client.service.domain.worker.Worker;
 import spharos.client.service.domain.worker.WorkerReservationHistory;
 import spharos.client.service.domain.worker.WorkerSchedule;
 import spharos.client.service.domain.worker.converter.DayOfWeekConverter;
 import spharos.client.service.domain.worker.enumType.DayOfWeekType;
 import spharos.client.service.infrastructure.*;
-
-import java.text.ParseException;
+import spharos.client.service.vo.response.SearchServiceDateListResponse;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -32,8 +35,10 @@ public class SearchServiceImpl implements SearchService {
     private final WorkerHistoryRepository workerHistoryRepository;
     private final WorkerRepository workerRepository;
     private final WorkerScheduleRepository workerScheduleRepository;
+    private final ServiceImageRepository serviceImageRepository;
+    private final ServicesRepository servicesRepository;
     @Override
-    public List<Long> findSearchResult(String type, LocalDate date, Integer region) throws ParseException {
+    public List<Long> findServiceList(String type, LocalDate date, Integer region){
 
         // 1. 해당 지역에 서비스를 제공하는 업체들을 조회한다.
         List<ServiceArea> serviceAreaList = serviceAreaRepository.findByAreaCode(region);
@@ -132,4 +137,38 @@ public class SearchServiceImpl implements SearchService {
         //컨트롤러로 serviceId 리스트 리턴
         return servicePossibleList;
     }
+
+    @Override
+    public List<SearchServiceDateListResponse> findServiceListData(List<Long> serviceIdList) {
+
+        List<SearchServiceDateListResponse> searchServiceDateListResponseList = new ArrayList<>();
+
+        for (Long serviceId : serviceIdList) {
+            Optional<Services> serviceOptional = servicesRepository.findById(serviceId);
+
+            if (serviceOptional.isEmpty()) {
+                throw new CustomException(ResponseCode.CANNOT_FIND_SERVICE);
+            }
+
+            Services service = serviceOptional.get();
+            String serviceName = service.getName();
+
+            List<ServiceImage> serviceImageList = serviceImageRepository.findByServiceId(serviceId);
+            List<String> searchServiceImgUrlList = new ArrayList<>();
+
+            for (ServiceImage serviceImage : serviceImageList) {
+                searchServiceImgUrlList.add(serviceImage.getImgUrl());
+            }
+
+            SearchServiceDateListResponse searchServiceDateListResponse = SearchServiceDateListResponse.builder()
+                    .serviceName(serviceName)
+                    .serviceImgUrl(searchServiceImgUrlList)
+                    .build();
+
+            searchServiceDateListResponseList.add(searchServiceDateListResponse);
+        }
+
+        return searchServiceDateListResponseList;
+    }
+
 }

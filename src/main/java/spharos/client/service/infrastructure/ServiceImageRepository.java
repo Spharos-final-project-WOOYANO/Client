@@ -10,4 +10,6 @@ public interface ServiceImageRepository extends JpaRepository<ServiceImage, Long
 
     List<ServiceImage> findByService(Services services);
 
+    List<ServiceImage> findByServiceId(Long serviceId);
+
 }

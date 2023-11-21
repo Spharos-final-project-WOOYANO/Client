@@ -1,19 +1,17 @@
-package spharos.client.service.dto;
+package spharos.client.service.vo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchServiceDto {
+public class SearchServiceDateListResponse {
 
-        private List<String> serviceImgUrl;
-        private String name;
-
+    private String serviceName;
+    private List<String> serviceImgUrl;
 }
