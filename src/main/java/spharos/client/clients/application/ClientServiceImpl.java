@@ -12,6 +12,7 @@ import spharos.client.bank.dto.BankRegisterDto;
 import spharos.client.clients.domain.Client;
 import spharos.client.clients.domain.ClientServiceList;
 import spharos.client.clients.dto.ChangePasswordDto;
+import spharos.client.clients.dto.ConfirmPasswordDto;
 import spharos.client.clients.infrastructure.ClientRepository;
 import spharos.client.clients.infrastructure.ClientServiceListRepository;
 import spharos.client.clients.vo.request.ClientLoginRequest;
@@ -199,6 +200,7 @@ public class ClientServiceImpl implements ClientService {
                 .clientPhone(client.getClientPhone())
                 .clientAddress(client.getClientAddress())
                 .clientRegistrationNumber(client.getClientRegistrationNumber())
+                .createdAt(client.getCreatedAt())
                 .build();
     }
 
@@ -216,5 +218,20 @@ public class ClientServiceImpl implements ClientService {
                 request.getClientAddress());
     }
 
+    // 비밀번호 확인
+    @Override
+    public Boolean confirmPassword(ConfirmPasswordDto confirmPasswordDto) {
+
+        // 이메일로 업체 회원 정보 조회
+        Client client = clientRepository.findByClientId(confirmPasswordDto.getEmail())
+                .orElseThrow(() -> new CustomException(ResponseCode.CANNOT_FIND_CLIENT));
+
+        // 비밀번호 일치 확인
+        if(new BCryptPasswordEncoder().matches(confirmPasswordDto.getPassword(),client.getPassword())) {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
 
 }

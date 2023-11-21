@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import spharos.client.clients.application.ClientService;
 import spharos.client.clients.dto.ChangePasswordDto;
+import spharos.client.clients.dto.ConfirmPasswordDto;
 import spharos.client.clients.vo.request.*;
 import spharos.client.clients.vo.response.*;
 import spharos.client.global.common.response.BaseResponse;
@@ -137,6 +138,30 @@ public class ClientController {
         // 업체 회원 정보 수정
         clientService.modifyClient(email, request);
         return new BaseResponse<>();
+    }
+
+    /*
+        비밀번호 확인
+    */
+    @Operation(summary = "비밀번호 확인",
+            description = "업체 회원정보 관리 페이지에서 비밀번호 변경 전 비밀번호 확인",
+            tags = { "Client Mypage" })
+    @PostMapping("/mypage/confirm/password")
+    public BaseResponse<?> confirmPassword(@RequestHeader("email") String email,
+                                        @RequestBody ClientConfirmPasswordRequest request) {
+
+        ConfirmPasswordDto dto = ConfirmPasswordDto.builder()
+                .email(email)
+                .password(request.getPassword())
+                .build();
+
+        // 비밀번호 확인
+        Boolean checkResult = clientService.confirmPassword(dto);
+
+        ClientConfirmPasswordResponse response = ClientConfirmPasswordResponse.builder()
+                .checkResult(checkResult)
+                .build();
+        return new BaseResponse<>(response);
     }
 
     /*

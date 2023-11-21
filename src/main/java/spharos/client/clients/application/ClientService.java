@@ -1,6 +1,7 @@
 package spharos.client.clients.application;
 
 import spharos.client.clients.dto.ChangePasswordDto;
+import spharos.client.clients.dto.ConfirmPasswordDto;
 import spharos.client.clients.vo.request.ClientLoginRequest;
 import spharos.client.clients.vo.request.ClientModifyRequest;
 import spharos.client.clients.vo.request.ClientSignUpRequest;
@@ -26,5 +27,7 @@ public interface ClientService {
     ClientInformationResponse getClientInformation(String email);
     // 업체 회원 정보 수정
     void modifyClient(String email, ClientModifyRequest clientModifyRequest);
+    // 비밀번호 확인
+    Boolean confirmPassword(ConfirmPasswordDto confirmPasswordDto);
 
 }
