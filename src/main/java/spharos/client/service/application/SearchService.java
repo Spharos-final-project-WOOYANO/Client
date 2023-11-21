@@ -5,5 +5,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface SearchService {
-    List<Long> findSearchResult(String type, LocalDate date, int region) throws ParseException;
+    List<Long> findSearchResult(String type, LocalDate date, Integer region) throws ParseException;
 }

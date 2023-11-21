@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface WorkerHistoryRepository extends JpaRepository<WorkerReservationHistory,Long> {
 
-    List<Integer> findServiceTimeByReservationDateAndWorkerId(LocalDate date,Long workerId);
+    List<WorkerReservationHistory> findByReservationDateAndWorkerId(LocalDate date,Long workerId);
 
 }

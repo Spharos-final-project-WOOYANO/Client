@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ServiceAreaRepository extends JpaRepository<ServiceArea,Long> {
 
-    List<Long> findServicesIdByAreaCode(int areaCode);
+    List<ServiceArea> findByAreaCode(Integer areaCode);
     List<ServiceArea> findByServices(Services services);
 
 }

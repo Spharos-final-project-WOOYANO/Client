@@ -6,5 +6,5 @@ import spharos.client.service.domain.worker.Worker;
 import java.util.List;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
-    List<Long> findIdByServiceId(Long serviceId);
+    List<Worker> findByServiceId(Long serviceId);
 }
