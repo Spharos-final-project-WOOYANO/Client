@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
+import spharos.client.service.domain.category.Category;
 import spharos.client.service.domain.category.converter.BaseTypeConverter;
 import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 import spharos.client.service.domain.services.ServiceArea;
@@ -37,6 +38,7 @@ public class SearchServiceImpl implements SearchService {
     private final WorkerScheduleRepository workerScheduleRepository;
     private final ServiceImageRepository serviceImageRepository;
     private final ServicesRepository servicesRepository;
+    private final CategoryRepository categoryRepository;
     @Override
     public List<Long> findServiceList(String type, LocalDate date, Integer region){
 
@@ -63,7 +65,12 @@ public class SearchServiceImpl implements SearchService {
             // 2-2. serviceId와 type을 통해 서비스가 해당 타입의 서비스를 제공하는지 여부를 조회
             //      false - 지역은 일치하지만 타입은 일치하지 않는 업체
             //      true - 해당 지역에서 해당 타입의 서비스를 제공하는 업체
-            boolean checkServiceType = serviceCategoryRepository.existsByCategoryBaseCategoryAndServiceId(serviceType, serviceId);
+            Optional<Category> checkCategory = categoryRepository.findByBaseCategory(serviceType);
+            if (checkCategory.isEmpty()) {
+                //↓ 아래의 예외가 실제로 발생할지 의문입니다.
+                throw new CustomException(ResponseCode.CANNOT_FIND_SERVICE_CATEGORY_TYPE);
+            }
+            boolean checkServiceType = serviceCategoryRepository.existsByCategoryIdAndServiceId(checkCategory.get().getId(), serviceId);
 
             log.info("serviceTypeFilter : {}", checkServiceType);
 

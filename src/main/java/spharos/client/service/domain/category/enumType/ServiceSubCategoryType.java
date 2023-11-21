@@ -7,6 +7,7 @@ import spharos.client.global.common.domain.BaseEnum;
 @Getter
 @AllArgsConstructor
 public enum ServiceSubCategoryType implements BaseEnum<String, String> {
+        NO_HOME_APPLIANCES("0","NO_HOME_APPLIANCES"),
         AIR_CONDITIONER("1","AIR_CONDITIONER"),
         AIR_PURIFIER("2","AIR_PURIFIER"),
         REFRIGERATOR("3","REFRIGERATOR"),
