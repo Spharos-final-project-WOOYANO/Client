@@ -12,6 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchServiceDateListResponse {
 
-    private String serviceName;
-    private List<String> serviceImgUrl;
+    private String name;
+    private List<String> imgUrl;
+    private String description;
+    private String address;
 }
