@@ -15,7 +15,6 @@ import spharos.client.service.domain.category.converter.SuperTypeConverter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 @Getter
 @Table(name = "category")
 public class Category {
@@ -24,15 +23,14 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,length = 30)
+    @Column(nullable = false)
     @Convert(converter = SuperTypeConverter.class)
     private ServiceSuperCategoryType superCategory;
 
-    @Column(nullable = false,length = 30)
+    @Column(nullable = false)
     @Convert(converter = BaseTypeConverter.class)
     private ServiceBaseCategoryType baseCategory;
 
-    @Column(nullable = true,length = 30)
     @Convert(converter = SubTypeConverter.class)
     private ServiceSubCategoryType subCategory;
 

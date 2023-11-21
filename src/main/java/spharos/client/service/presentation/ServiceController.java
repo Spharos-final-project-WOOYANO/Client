@@ -2,8 +2,10 @@ package spharos.client.service.presentation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import spharos.client.global.common.response.BaseResponse;
 import spharos.client.service.application.SearchService;
 import lombok.extern.slf4j.Slf4j;
+import spharos.client.service.vo.response.SearchServiceDateListResponse;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -24,10 +26,13 @@ public class ServiceController {
 //
 //    }
     @GetMapping("/search") // required=false 옵션으로 해당 requestParam이 null일 경우에도 정상적으로 동작하도록 설정
-    public void searchList(@RequestParam("type") String type , @RequestParam(value="date",required=false) LocalDate date , @RequestParam("region") Integer region) throws ParseException {
-        log.info("type : {}",type);
-        List<Long> possibleServiceIdList = searchService.findSearchResult(type,date,region);
-        log.info("Controller-possibleServiceIdList : {}", possibleServiceIdList.size());
+    public BaseResponse<List<SearchServiceDateListResponse>> searchList(@RequestParam("type") String type , @RequestParam(value="date",required=false) LocalDate date , @RequestParam("region") Integer region) throws ParseException {
+
+        List<Long> possibleServiceIdList = searchService.findServiceList(type,date,region);
+
+        List<SearchServiceDateListResponse> searchServiceDtoList = searchService.findServiceListData(possibleServiceIdList);
+
+        return new BaseResponse<>(searchServiceDtoList);
 
     }
 

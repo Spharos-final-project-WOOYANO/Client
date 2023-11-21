@@ -23,9 +23,8 @@ public enum ResponseCode {
     DORMANT_CLIENT(HttpStatus.BAD_REQUEST, false, 2050,"휴면 회원입니다."),
     WAIT_CLIENT(HttpStatus.BAD_REQUEST, false, 2060,"입점 대기중인 회원입니다."),
     CANNOT_FIND_SERVICE(HttpStatus.BAD_REQUEST, false, 2070,"서비스 정보를 찾을 수 없습니다."),
-    CANNOT_FIND_WORKER(HttpStatus.BAD_REQUEST, false, 2080,"기사 정보를 찾을 수 없습니다.");
-
-
+    CANNOT_FIND_WORKER(HttpStatus.BAD_REQUEST, false, 2080,"기사 정보를 찾을 수 없습니다."),
+    CANNOT_FIND_SERVICE_CATEGORY_TYPE(HttpStatus.BAD_REQUEST, false, 2090,"서비스 타입을 찾을수 없습니다.");
     private final HttpStatus httpStatus;
     private final boolean success;
     private final int code;
