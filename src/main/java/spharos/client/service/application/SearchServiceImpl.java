@@ -35,70 +35,76 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<Long> findSearchResult(String type, LocalDate date, Integer region) throws ParseException {
 
-        // 1. 프론트에서 받아온 지역코드를 통해 해당 지역코드를 포함한 모든 ServiceArea테이블을 검색함
+        // 1. 해당 지역에 서비스를 제공하는 업체들을 조회한다.
         List<ServiceArea> serviceAreaList = serviceAreaRepository.findByAreaCode(region);
 
-        // 1-2. 타입 설정
+        // 1-2. 타입 설정(BaseType설정)
         ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
 
-        // 1-3. date가 null일 경우 현재 날짜로 초기화
+        // 1-3. date가 null일 경우 현재 날짜로 설정
         if (date == null) {
             date = LocalDate.now();
         }
 
-        // 빈 배열로 초기화
+        // 1-4.서비스 가능한 업체의id를 담을 빈 배열 초기화 -> 어느 시점에서 해야할지 모르겠어서 지금 초기화
         List<Long> servicePossibleList = new ArrayList<>();
 
-        // 2. 조회한 List수 만큼 반복
+        // 2. ServiceAreaList의 길이만큼 반복문 실행 +(해당 지역에 서비스를 제공하는 업체들의 수)
         for (ServiceArea serviceArea : serviceAreaList) {
+            //ServiceArea에서 서비스의 id를 가져옴
             Long serviceId = serviceArea.getServices().getId();
             log.info("serviceId : {}", serviceId);
 
-            // 2-1. serviceId와 type을 통해 해당지역에서 해당하는 타입의 서비스를 제공하는 service가 있는지 조회함
+            // 2-2. serviceId와 type을 통해 서비스가 해당 타입의 서비스를 제공하는지 여부를 조회
+            //      false - 지역은 일치하지만 타입은 일치하지 않는 업체
+            //      true - 해당 지역에서 해당 타입의 서비스를 제공하는 업체
             boolean checkServiceType = serviceCategoryRepository.existsByCategoryBaseCategoryAndServiceId(serviceType, serviceId);
 
             log.info("serviceTypeFilter : {}", checkServiceType);
 
-            // 2-2. 해당 지역에서 해당 타입의 서비스를 제공하는 업체라면 조건문 실행
             if (checkServiceType) {
-                // 2-3.해당 업체에 속한 모든 작업자의 id를 검색 후 list에 저장
+                // 3.해당 업체에 속한 모든 작업자를 검색 후 list에 저장
                 List<Worker> workerList = workerRepository.findByServiceId(serviceId);
 
-                // 해당 업체에 속한 모든 작업자 수로 초기화
+                // 3-2. 해당 업체에 속한 모든 작업자 수를 int타입의 변수에 저장
+                //       ->해당 변수의 값이 0인 업체는 표시되지 않음
                 int workerListSize = workerList.size();
                 log.info("workerListSize : {}", workerListSize);
 
-                // 2-4. 해당 작업자가 서비스 가능한 작업자인지 판단하기 위한 반복문
+                // 4. 해당 작업자가 서비스 가능한 작업자인지 판단하기 위한 반복문
                 for (Worker workers : workerList) {
+                    // 4-2. 해당 작업자의 id를 가져옴
                     Long workerId = workers.getId();
 
-                    // date의 요일을 DayOfWeek타입에서 -> int -> String으로 변환
+                    // 4-3. DayOfWeek타입을 int타입으로 변환한뒤 Converter를 통해 최종적으로 Enum타입으로 변환한다.
                     DayOfWeek dayOfWeek = date.getDayOfWeek();
                     int dayOfWeekInt = dayOfWeek.getValue();
-
+                    log.info("dayOfWeekInt : {}", dayOfWeekInt);
                     DayOfWeekType dayOfWeekType = new DayOfWeekConverter().convertToEntityAttribute(dayOfWeekInt);
+                    // 5.해당 날짜의 요일과 작업자의 Id를 통해 작업자의 해당 요일의 업무 일정을 조회
                     Optional<WorkerSchedule> optionalWorkerSchedule = workerScheduleRepository.findByDayOfWeekAndWorkerId(dayOfWeekType, workerId);
 
-                    // optionalWorkerSchedule이 비어있으면 해당 반복문 탈출
+                    // 5-2. optionalWorkerSchedule이 비어있으면 해당 반복문 탈출 <-해당 작업자가 해당요일에 휴무이거나 그만둔 작업자이거나 할때 비어있을예정
                     if(optionalWorkerSchedule.isEmpty()) {
+                        // 5-3.optonalWorkerSchedule이 비어있으면 해당 작업자는 해당날짜에 서비스 불가한 작업자이므로 반복문 즉시탈출(자신이 속한 반복문만)
                         break;
                     }
                     WorkerSchedule workerSchedules = optionalWorkerSchedule.get();
                     log.info("workerSchedules : {}", workerSchedules);
 
-                    // 해당 근무자의 근무시작시간과 근무종료시간을 가져옴
+                    // 5-4.해당 근무자의 근무시작시간과 근무종료시간을 LocalTime타입으로 가져옴
                     LocalTime startTime = workerSchedules.getServiceStartTime();
                     LocalTime endTime = workerSchedules.getServiceFinishTime();
 
                     long diffMinutes = Duration.between(endTime, startTime).toMinutes() / 60;
 
                     if (diffMinutes < 0) {
-                        // 만약에 근무종료시간이 근무시작시간보다 작다면 음수가 나오므로 양수로 바꿔줌
+                        // + 만약에 근무종료시간이 근무시작시간보다 작은경우가 생긴다면 결과가 음수이므로 양수로 바꿔준다.
                         diffMinutes *= -1;
                     }
                     log.info("diffMinutes : {}", diffMinutes);
 
-                    // WorkerReservationHistory날짜와 작업자의 아이디를 통해 작업자의 해당날짜의 예약일정을 모두 조회한다.
+                    // 6.해당 작업자의 해당일 예약내역을 List에 저장
                     List<WorkerReservationHistory> workerReservationHistoryList = workerHistoryRepository.findByReservationDateAndWorkerId(date, workers.getId());
 
                     for (WorkerReservationHistory workerReservationHistory : workerReservationHistoryList) {
@@ -121,7 +127,9 @@ public class SearchServiceImpl implements SearchService {
                     }
                 }
             }
+
         }
+        //컨트롤러로 serviceId 리스트 리턴
         return servicePossibleList;
     }
 }
