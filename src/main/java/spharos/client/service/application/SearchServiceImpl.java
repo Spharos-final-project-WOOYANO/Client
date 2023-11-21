@@ -159,6 +159,8 @@ public class SearchServiceImpl implements SearchService {
 
             Services service = serviceOptional.get();
             String serviceName = service.getName();
+            String serviceAddress = service.getAddress();
+            String serviceDescription = service.getDescription();
 
             List<ServiceImage> serviceImageList = serviceImageRepository.findByServiceId(serviceId);
             List<String> searchServiceImgUrlList = new ArrayList<>();
@@ -168,8 +170,10 @@ public class SearchServiceImpl implements SearchService {
             }
 
             SearchServiceDateListResponse searchServiceDateListResponse = SearchServiceDateListResponse.builder()
-                    .serviceName(serviceName)
-                    .serviceImgUrl(searchServiceImgUrlList)
+                    .name(serviceName)
+                    .imgUrl(searchServiceImgUrlList)
+                    .address(serviceAddress)
+                    .description(serviceDescription)
                     .build();
 
             searchServiceDateListResponseList.add(searchServiceDateListResponse);
