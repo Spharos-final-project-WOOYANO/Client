@@ -10,4 +10,6 @@ public interface ClientServiceListRepository extends JpaRepository<ClientService
 
     List<ClientServiceList> findByClient(Client client);
 
+    ClientServiceList findByServicesId(Long serviceId);
+
 }

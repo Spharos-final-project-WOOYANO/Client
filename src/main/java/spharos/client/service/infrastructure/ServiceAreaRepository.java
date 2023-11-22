@@ -11,4 +11,6 @@ public interface ServiceAreaRepository extends JpaRepository<ServiceArea,Long> {
     List<ServiceArea> findByAreaCode(Integer areaCode);
     List<ServiceArea> findByServices(Services services);
 
+    List<ServiceArea> findByServicesId(Long serviceId);
+
 }

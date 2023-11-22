@@ -1,4 +1,4 @@
-package spharos.client.service.domain.worker.enumType;
+package spharos.client.worker.domain.enumType;
 
 import lombok.Getter;
 import spharos.client.global.common.domain.BaseEnum;

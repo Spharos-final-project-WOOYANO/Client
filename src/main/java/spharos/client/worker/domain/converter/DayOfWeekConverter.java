@@ -1,8 +1,8 @@
-package spharos.client.service.domain.worker.converter;
+package spharos.client.worker.domain.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import spharos.client.service.domain.worker.enumType.DayOfWeekType;
+import spharos.client.worker.domain.enumType.DayOfWeekType;
 
 import java.util.EnumSet;
 import java.util.NoSuchElementException;

@@ -11,13 +11,16 @@ import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 import spharos.client.service.domain.services.ServiceArea;
 import spharos.client.service.domain.services.ServiceImage;
 import spharos.client.service.domain.services.Services;
-import spharos.client.service.domain.worker.Worker;
-import spharos.client.service.domain.worker.WorkerReservationHistory;
-import spharos.client.service.domain.worker.WorkerSchedule;
-import spharos.client.service.domain.worker.converter.DayOfWeekConverter;
-import spharos.client.service.domain.worker.enumType.DayOfWeekType;
 import spharos.client.service.infrastructure.*;
 import spharos.client.service.vo.response.SearchServiceDateListResponse;
+import spharos.client.worker.domain.Worker;
+import spharos.client.worker.domain.WorkerReservationHistory;
+import spharos.client.worker.domain.WorkerSchedule;
+import spharos.client.worker.domain.converter.DayOfWeekConverter;
+import spharos.client.worker.domain.enumType.DayOfWeekType;
+import spharos.client.worker.infrastructure.WorkerReservationHistoryRepository;
+import spharos.client.worker.infrastructure.WorkerRepository;
+import spharos.client.worker.infrastructure.WorkerScheduleRepository;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -33,7 +36,7 @@ public class SearchServiceImpl implements SearchService {
 
     private final ServiceCategoryRepository serviceCategoryRepository;
     private final ServiceAreaRepository serviceAreaRepository;
-    private final WorkerHistoryRepository workerHistoryRepository;
+    private final WorkerReservationHistoryRepository workerReservationHistoryRepository;
     private final WorkerRepository workerRepository;
     private final WorkerScheduleRepository workerScheduleRepository;
     private final ServiceImageRepository serviceImageRepository;
@@ -117,7 +120,7 @@ public class SearchServiceImpl implements SearchService {
                     log.info("diffMinutes : {}", diffMinutes);
 
                     // 6.해당 작업자의 해당일 예약내역을 List에 저장
-                    List<WorkerReservationHistory> workerReservationHistoryList = workerHistoryRepository.findByReservationDateAndWorkerId(date, workers.getId());
+                    List<WorkerReservationHistory> workerReservationHistoryList = workerReservationHistoryRepository.findByReservationDateAndWorkerId(date, workers.getId());
 
                     for (WorkerReservationHistory workerReservationHistory : workerReservationHistoryList) {
                         diffMinutes -= workerReservationHistory.getServiceTime();

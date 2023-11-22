@@ -1,8 +1,10 @@
-package spharos.client.service.infrastructure;
+package spharos.client.worker.infrastructure;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import spharos.client.service.domain.worker.WorkerSchedule;
-import spharos.client.service.domain.worker.enumType.DayOfWeekType;
+import spharos.client.worker.domain.WorkerSchedule;
+import spharos.client.worker.domain.enumType.DayOfWeekType;
+
 import java.util.Optional;
 
 public interface WorkerScheduleRepository extends JpaRepository<WorkerSchedule, Long> {

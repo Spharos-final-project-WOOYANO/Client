@@ -48,7 +48,7 @@ public class Services {
                                          String headerImgUrl,
                                          String name,
                                          String address){
-    //접근 지정자를 static으로 줘서 외부에서도 접근가능하게 함
+        //접근 지정자를 static으로 줘서 외부에서도 접근가능하게 함
         return new Services(logoUrl,description,headerImgUrl,name,address);
         
     }
