@@ -1,15 +1,18 @@
 package spharos.client.worker.vo.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class WorkerReservationResponse {
 
-    private List<Long> serviceId; //작업자가 속한 업체의 id
-    public WorkerReservationResponse(List<Long> serviceId) {
-        this.serviceId = serviceId;
-    }
+    private String name;
+    private String description;
+    private String imgUrl;
 }
