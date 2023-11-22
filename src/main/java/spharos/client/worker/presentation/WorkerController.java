@@ -1,5 +1,6 @@
 package spharos.client.worker.presentation;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,9 @@ import java.util.List;
 public class WorkerController {
 
     private final WorkerService workerService;
-
+    @Operation(summary = "작업자 리스트 조회",
+            description = "작업자 리스트 조회",
+            tags = { "Worker List Retrieve" })
     @GetMapping("/list")
     public BaseResponse<List<WorkerReservationResponse>> retrieveWorkerList(@RequestParam("serviceId") Long serviceId){
 
