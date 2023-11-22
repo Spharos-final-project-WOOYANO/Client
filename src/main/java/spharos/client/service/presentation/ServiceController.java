@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import spharos.client.service.dto.ServiceDetailDto;
 import spharos.client.service.vo.response.SearchServiceDateListResponse;
 import spharos.client.service.vo.response.ServiceDetailResponse;
-
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,11 +22,6 @@ public class ServiceController {
     private final SearchService searchService;
     private final RetrieveServiceDetailService retrieveServiceDetailService;
 
-//    @GetMapping("/service")
-//    public void houseKeeprList(@RequestParam("type") String type){
-//        retrieveServiceDetailService.retrieveServiceDetail(typ;
-//
-//    }
     @GetMapping("/service-detail")
     public BaseResponse<ServiceDetailResponse> serviceDetail (@RequestParam("serviceId") Long serviceId){
 

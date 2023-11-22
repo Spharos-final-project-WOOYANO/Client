@@ -1,11 +1,12 @@
-package spharos.client.service.domain.worker;
+package spharos.client.worker.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spharos.client.service.domain.services.Services;
-import spharos.client.service.domain.worker.enumType.DayOfWeekType;
+import spharos.client.worker.domain.enumType.DayOfWeekType;
+
 import java.time.LocalTime;
 
 @Entity

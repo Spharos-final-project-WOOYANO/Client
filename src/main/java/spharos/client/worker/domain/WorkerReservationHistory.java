@@ -1,9 +1,10 @@
-package spharos.client.service.domain.worker;
+package spharos.client.worker.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 

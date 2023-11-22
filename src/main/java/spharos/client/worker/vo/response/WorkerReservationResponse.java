@@ -1,4 +1,4 @@
-package spharos.client.service.vo.response;
+package spharos.client.worker.vo.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

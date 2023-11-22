@@ -8,7 +8,7 @@ import spharos.client.global.exception.CustomException;
 import spharos.client.service.domain.services.Services;
 import spharos.client.service.domain.worker.Worker;
 import spharos.client.service.infrastructure.ServicesRepository;
-import spharos.client.service.infrastructure.WorkerRepository;
+import spharos.client.worker.infrastructure.WorkerRepository;
 import spharos.client.service.vo.response.*;
 
 @Slf4j
