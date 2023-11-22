@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
 import spharos.client.service.domain.services.Services;
-import spharos.client.service.domain.worker.Worker;
 import spharos.client.service.infrastructure.ServicesRepository;
+import spharos.client.worker.domain.Worker;
 import spharos.client.worker.infrastructure.WorkerRepository;
 import spharos.client.service.vo.response.*;
 
