@@ -27,21 +27,17 @@ public class RetrieveServiceDetailServiceImpl implements RetrieveServiceDetailSe
         Client client = clientServiceList.getClient();
         Services services = clientServiceList.getServices();
 
-        List<ServiceArea> serviceAreas = serviceAreaRepository.findByServicesId(serviceId);
 
-        List<Integer> servicePossibleRegionList = new ArrayList<>();
+        List<Integer> servicePossibleRegionList = serviceAreaRepository.findByServicesId(serviceId).stream()
+                .map(ServiceArea::getAreaCode)
+                .toList();
 
-        for(ServiceArea serviceArea : serviceAreas){
-            servicePossibleRegionList.add(serviceArea.getAreaCode());
-        }
-
-        ServiceDetailDto serviceDetailDto = ServiceDetailDto.builder()
+        return ServiceDetailDto.builder()
                 .description(services.getDescription())
                 .serviceAreaList(servicePossibleRegionList)
                 .clientName(client.getClientName())
-                .cliendAddress(client.getClientAddress())
+                .clientAddress(client.getClientAddress())
                 .registrationNumber(client.getClientRegistrationNumber())
                 .build();
-        return serviceDetailDto;
     }
 }

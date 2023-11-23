@@ -4,16 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchServiceDateListResponse {
+public class ReviewWriterResponse {
 
-    private String name;
-    private List<String> imgUrl;
-    private String description;
-    private String address;
+    private String serviceName;
+    private String workerName;
 }
