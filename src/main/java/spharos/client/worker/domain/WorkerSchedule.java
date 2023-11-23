@@ -25,7 +25,7 @@ public class WorkerSchedule {
     @Column(nullable = false, length = 20, name = "day_of_week")
     private DayOfWeekType dayOfWeek;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Worker worker;
 
@@ -51,7 +51,7 @@ public class WorkerSchedule {
                                                         DayOfWeekType dayOfWeek,
                                                         LocalTime serviceStartTime,
                                                         LocalTime serviceFinishTime) {
-        return new WorkerSchedule(service,worker, dayOfWeek, serviceStartTime, serviceFinishTime);
+        return new WorkerSchedule(service, worker, dayOfWeek, serviceStartTime, serviceFinishTime);
     }
 
 }
