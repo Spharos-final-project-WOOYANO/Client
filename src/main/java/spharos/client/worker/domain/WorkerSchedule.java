@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spharos.client.service.domain.services.Services;
 import spharos.client.worker.domain.enumType.DayOfWeekType;
-
 import java.time.LocalTime;
 
 @Entity
@@ -37,10 +36,10 @@ public class WorkerSchedule {
     private LocalTime serviceFinishTime;
 
     public WorkerSchedule(Services service,
-                          Worker worker,
-                          DayOfWeekType dayOfWeek,
-                          LocalTime serviceStartTime,
-                          LocalTime serviceFinishTime) {
+                            Worker worker,
+                            DayOfWeekType dayOfWeek,
+                            LocalTime serviceStartTime,
+                            LocalTime serviceFinishTime) {
         this.service = service;
         this.worker = worker;
         this.dayOfWeek = dayOfWeek;
@@ -48,10 +47,10 @@ public class WorkerSchedule {
         this.serviceFinishTime = serviceFinishTime;
     }
     public static WorkerSchedule createWorkerSchedule(Services service,
-                                                      Worker worker,
-                                                      DayOfWeekType dayOfWeek,
-                                                      LocalTime serviceStartTime,
-                                                      LocalTime serviceFinishTime) {
+                                                        Worker worker,
+                                                        DayOfWeekType dayOfWeek,
+                                                        LocalTime serviceStartTime,
+                                                        LocalTime serviceFinishTime) {
         return new WorkerSchedule(service,worker, dayOfWeek, serviceStartTime, serviceFinishTime);
     }
 

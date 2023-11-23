@@ -12,7 +12,7 @@ import spharos.client.service.domain.services.ServiceArea;
 import spharos.client.service.domain.services.ServiceImage;
 import spharos.client.service.domain.services.Services;
 import spharos.client.service.infrastructure.*;
-import spharos.client.service.vo.response.SearchServiceDateListResponse;
+import spharos.client.service.vo.response.SearchServiceDataListResponse;
 import spharos.client.worker.domain.Worker;
 import spharos.client.worker.domain.WorkerReservationHistory;
 import spharos.client.worker.domain.WorkerSchedule;
@@ -72,6 +72,7 @@ public class SearchServiceImpl implements SearchService {
             if (checkCategory.isEmpty()) {
                 //↓ 아래의 예외가 실제로 발생할지 의문입니다.
                 throw new CustomException(ResponseCode.CANNOT_FIND_SERVICE_CATEGORY_TYPE);
+                //  그것이 실제로 발생했습니다....
             }
             boolean checkServiceType = serviceCategoryRepository.existsByCategoryIdAndServiceId(checkCategory.get().getId(), serviceId);
 
@@ -149,9 +150,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<SearchServiceDateListResponse> findServiceListData(List<Long> serviceIdList) {
+    public List<SearchServiceDataListResponse> findServiceListData(List<Long> serviceIdList) {
 
-        List<SearchServiceDateListResponse> searchServiceDateListResponseList = new ArrayList<>();
+        List<SearchServiceDataListResponse> searchServiceDataListResponseList = new ArrayList<>();
 
         for (Long serviceId : serviceIdList) {
             Optional<Services> serviceOptional = servicesRepository.findById(serviceId);
@@ -172,17 +173,17 @@ public class SearchServiceImpl implements SearchService {
                 searchServiceImgUrlList.add(serviceImage.getImgUrl());
             }
 
-            SearchServiceDateListResponse searchServiceDateListResponse = SearchServiceDateListResponse.builder()
+            SearchServiceDataListResponse searchServiceDataListResponse = SearchServiceDataListResponse.builder()
                     .name(serviceName)
                     .imgUrl(searchServiceImgUrlList)
                     .address(serviceAddress)
                     .description(serviceDescription)
                     .build();
 
-            searchServiceDateListResponseList.add(searchServiceDateListResponse);
+            searchServiceDataListResponseList.add(searchServiceDataListResponse);
         }
 
-        return searchServiceDateListResponseList;
+        return searchServiceDataListResponseList;
     }
 
 }

@@ -24,7 +24,7 @@ public class ServiceArea {
     private Integer areaCode;
 
     public ServiceArea(Services services,
-                       Integer areaCode) {
+                        Integer areaCode) {
         this.services = services;
         this.areaCode = areaCode;
     }

@@ -14,6 +14,7 @@ public class ServiceDetailDto {
     private List<Integer> serviceAreaList;
     //↓상호명
     private String clientName;
+    private String clientAddress;
     private String registrationNumber;
-    private String cliendAddress;
+
 }

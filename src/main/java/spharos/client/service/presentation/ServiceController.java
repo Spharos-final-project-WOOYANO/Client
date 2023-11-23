@@ -8,7 +8,7 @@ import spharos.client.service.application.RetrieveServiceDetailService;
 import spharos.client.service.application.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import spharos.client.service.dto.ServiceDetailDto;
-import spharos.client.service.vo.response.SearchServiceDateListResponse;
+import spharos.client.service.vo.response.SearchServiceDataListResponse;
 import spharos.client.service.vo.response.ServiceDetailResponse;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ public class ServiceController {
                 .name(serviceDetailDto.getClientName())
                 .serviceAreaList(serviceDetailDto.getServiceAreaList())
                 .registrationNumber(serviceDetailDto.getRegistrationNumber())
-                .cliendAddress(serviceDetailDto.getCliendAddress())
+                .clientAddress(serviceDetailDto.getClientAddress())
                 .build();
 
         return new BaseResponse<>(serviceDetailResponse);
@@ -44,11 +44,11 @@ public class ServiceController {
             description = "서비스 날짜,지역,타입으로 검색",
             tags = { "Service Search" })
     @GetMapping("/search") // required=false 옵션으로 해당 requestParam이 null일 경우에도 정상적으로 동작하도록 설정
-    public BaseResponse<List<SearchServiceDateListResponse>> searchList(@RequestParam("type") String type , @RequestParam(value="date",required=false) LocalDate date , @RequestParam("region") Integer region) throws ParseException {
+    public BaseResponse<List<SearchServiceDataListResponse>> searchList(@RequestParam("type") String type , @RequestParam(value="date",required=false) LocalDate date , @RequestParam("region") Integer region) throws ParseException {
 
         List<Long> possibleServiceIdList = searchService.findServiceList(type,date,region);
 
-        List<SearchServiceDateListResponse> searchServiceDtoList = searchService.findServiceListData(possibleServiceIdList);
+        List<SearchServiceDataListResponse> searchServiceDtoList = searchService.findServiceListData(possibleServiceIdList);
 
         return new BaseResponse<>(searchServiceDtoList);
 
