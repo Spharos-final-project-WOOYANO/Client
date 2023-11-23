@@ -15,7 +15,7 @@ public class ReviewController {
     @PostMapping("/review/service")
     public List<ReviewWriterResponse> getReviewWriter(@RequestBody List<String> reservationNumList){
 
-        return reviewService.retrieveReviewWriter(reservationNumList).stream()
+                return reviewService.retrieveReviewWriter(reservationNumList).stream()
                 .map(reviewWriterDto -> ReviewWriterResponse.builder()
                         .serviceName(reviewWriterDto.getServiceName())
                         .workerName(reviewWriterDto.getWorkerName())

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewWriterResponse {
 
-    private String serviceName;
     private String workerName;
+    private String serviceName;
+
 }

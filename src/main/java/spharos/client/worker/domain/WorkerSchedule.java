@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spharos.client.service.domain.services.Services;
 import spharos.client.worker.domain.enumType.DayOfWeekType;
-
 import java.time.LocalTime;
 
 @Entity
