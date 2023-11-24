@@ -150,7 +150,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<SearchServiceDataListResponse> findServiceListData(List<Long> serviceIdList) {
+    public List<SearchServiceDataListResponse> findServiceListData(List<Long> serviceIdList,String type) {
 
         List<SearchServiceDataListResponse> searchServiceDataListResponseList = new ArrayList<>();
 
@@ -178,6 +178,7 @@ public class SearchServiceImpl implements SearchService {
                     .name(serviceName)
                     .serviceId(serviceId)
                     .imgUrl(searchServiceImgUrlList)
+                    .type(type)
                     .address(serviceAddress)
                     .description(serviceDescription)
                     .build();
