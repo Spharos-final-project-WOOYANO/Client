@@ -48,7 +48,7 @@ public class ServiceController {
 
         List<Long> possibleServiceIdList = searchService.findServiceList(type,date,region);
 
-        List<SearchServiceDataListResponse> searchServiceDtoList = searchService.findServiceListData(possibleServiceIdList);
+        List<SearchServiceDataListResponse> searchServiceDtoList = searchService.findServiceListData(possibleServiceIdList,type);
 
         return new BaseResponse<>(searchServiceDtoList);
 
