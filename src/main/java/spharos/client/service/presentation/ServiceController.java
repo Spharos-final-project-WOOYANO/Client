@@ -7,9 +7,11 @@ import spharos.client.global.common.response.BaseResponse;
 import spharos.client.service.application.RetrieveServiceDetailService;
 import spharos.client.service.application.SearchService;
 import lombok.extern.slf4j.Slf4j;
+import spharos.client.service.dto.SearchServiceDataListDto;
 import spharos.client.service.dto.ServiceDetailDto;
 import spharos.client.service.vo.response.SearchServiceDataListResponse;
 import spharos.client.service.vo.response.ServiceDetailResponse;
+import spharos.client.service.vo.response.ExcellentServiceResponse;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
@@ -54,5 +56,44 @@ public class ServiceController {
 
     }
 
+    @Operation(summary = "서비스 타입으로 검색",
+            description = "서비스 타입으로 업체 리스트 검색",
+            tags = { "Service Type ListSearch" })
+    @GetMapping("/service")
+    public BaseResponse<?> serviceTypeList(@RequestParam("type") String type) {
 
+        List<SearchServiceDataListDto> searchServiceDtoList = searchService.findServiceTypeSearch(type);
+
+        List<SearchServiceDataListResponse> searchServiceDataListResponseList = searchServiceDtoList.stream()
+                .map(searchServiceData -> SearchServiceDataListResponse.builder()
+                        .name(searchServiceData.getName())
+                        .imgUrl(searchServiceData.getImgUrl())
+                        .description(searchServiceData.getDescription())
+                        .address(searchServiceData.getAddress())
+                        .build())
+                .toList();
+
+        return new BaseResponse<>(searchServiceDataListResponseList);
+    }
+
+    @Operation(summary = "우수 업체 리스트 검색",
+            description = "찜 수를 기준으로 우수 업체 리스트 검색",
+            tags = { "Exellent ListSearch" })
+    @GetMapping("/excellent-service")
+    public BaseResponse<?> getExcellentServiceList(){
+
+    List<ExcellentServiceResponse> responseList = searchService.findExcellentServiceList().stream()
+            .map(dto -> ExcellentServiceResponse.builder()
+                    .servieId(dto.getServieId())
+                    .name(dto.getName())
+                    .imgUrl(dto.getImgUrl())
+                    .description(dto.getDescription())
+                    .address(dto.getAddress())
+                    .bookmarkCount(dto.getBookmarkCount())
+                    .reviewCount(dto.getReviewCount())
+                    .build())
+            .toList();
+
+        return new BaseResponse<>(responseList);
+    }
 }

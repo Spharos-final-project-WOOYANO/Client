@@ -6,16 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
-@Builder
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class SearchServiceDataListResponse {
-
+@NoArgsConstructor
+@Getter
+@Builder
+public class ExcellentServiceResponse {
     private String name;
-    private String type;
-    private Long serviceId;
     private List<String> imgUrl;
     private String description;
     private String address;
+    private Long servieId;
+    private int bookmarkCount;
+    private int reviewCount;
 }

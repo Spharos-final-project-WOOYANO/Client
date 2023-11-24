@@ -1,4 +1,4 @@
-package spharos.client.service.vo.response;
+package spharos.client.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +10,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchServiceDataListResponse {
+public class SearchServiceDataListDto {
 
     private String name;
-    private String type;
-    private Long serviceId;
     private List<String> imgUrl;
     private String description;
     private String address;

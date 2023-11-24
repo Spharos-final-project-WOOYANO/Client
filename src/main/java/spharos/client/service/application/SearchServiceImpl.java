@@ -11,16 +11,20 @@ import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 import spharos.client.service.domain.services.ServiceArea;
 import spharos.client.service.domain.services.ServiceImage;
 import spharos.client.service.domain.services.Services;
+import spharos.client.service.dto.SearchServiceDataListDto;
 import spharos.client.service.infrastructure.*;
+import spharos.client.service.presentation.BookmarkFeignClient;
 import spharos.client.service.vo.response.SearchServiceDataListResponse;
 import spharos.client.worker.domain.Worker;
 import spharos.client.worker.domain.WorkerReservationHistory;
 import spharos.client.worker.domain.WorkerSchedule;
 import spharos.client.worker.domain.converter.DayOfWeekConverter;
 import spharos.client.worker.domain.enumType.DayOfWeekType;
+import spharos.client.service.dto.ExcellentServiceDto;
 import spharos.client.worker.infrastructure.WorkerReservationHistoryRepository;
 import spharos.client.worker.infrastructure.WorkerRepository;
 import spharos.client.worker.infrastructure.WorkerScheduleRepository;
+import spharos.client.service.vo.response.MostServiceReviewBookmarkCountResponse;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -42,8 +46,9 @@ public class SearchServiceImpl implements SearchService {
     private final ServiceImageRepository serviceImageRepository;
     private final ServicesRepository servicesRepository;
     private final CategoryRepository categoryRepository;
+    private final BookmarkFeignClient bookmarkFeignClient;
     @Override
-    public List<Long> findServiceList(String type, LocalDate date, Integer region){
+    public List<Long> findServiceList(String type, LocalDate date, Integer region) {
 
         // 1. 해당 지역에 서비스를 제공하는 업체들을 조회한다.
         List<ServiceArea> serviceAreaList = serviceAreaRepository.findByAreaCode(region);
@@ -101,7 +106,7 @@ public class SearchServiceImpl implements SearchService {
                     Optional<WorkerSchedule> optionalWorkerSchedule = workerScheduleRepository.findByDayOfWeekAndWorkerId(dayOfWeekType, workerId);
 
                     // 5-2. optionalWorkerSchedule이 비어있으면 해당 반복문 탈출 <-해당 작업자가 해당요일에 휴무이거나 그만둔 작업자이거나 할때 비어있을예정
-                    if(optionalWorkerSchedule.isEmpty()) {
+                    if (optionalWorkerSchedule.isEmpty()) {
                         // 5-3.optonalWorkerSchedule이 비어있으면 해당 작업자는 해당날짜에 서비스 불가한 작업자이므로 반복문 즉시탈출(자신이 속한 반복문만)
                         break;
                     }
@@ -181,6 +186,7 @@ public class SearchServiceImpl implements SearchService {
                     .type(type)
                     .address(serviceAddress)
                     .description(serviceDescription)
+                    .type(type)
                     .build();
 
             searchServiceDataListResponseList.add(searchServiceDataListResponse);
@@ -189,4 +195,49 @@ public class SearchServiceImpl implements SearchService {
         return searchServiceDataListResponseList;
     }
 
+    @Override
+    public List<SearchServiceDataListDto> findServiceTypeSearch(String type) {
+
+        ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
+
+        return serviceCategoryRepository.findByCategoryBaseCategory(serviceType).stream()
+                .map(serviceCategory -> SearchServiceDataListDto.builder()
+                        .name(serviceCategory.getService().getName())
+                        .imgUrl(serviceImageRepository.findByServiceId(serviceCategory.getService().getId()).stream()
+                                .map(ServiceImage::getImgUrl)
+                                .toList())
+                        .address(serviceCategory.getService().getAddress())
+                        .description(serviceCategory.getService().getDescription())
+                        .build())
+                .toList();
+
+    }
+    @Override
+    public List<ExcellentServiceDto> findExcellentServiceList() {
+
+        List<MostServiceReviewBookmarkCountResponse> listResponse = bookmarkFeignClient.getBestBookmarkServiceIdList();
+        List<ExcellentServiceDto> excellentServiceDtoList = new ArrayList<>();
+
+        for (MostServiceReviewBookmarkCountResponse response : listResponse) {
+            servicesRepository.findById(response.getServiceId())
+                    .ifPresent(service -> {
+                        ExcellentServiceDto excellentServiceDto = ExcellentServiceDto.builder()
+                                .name(service.getName())
+                                .imgUrl(serviceImageRepository.findByServiceId(service.getId()).stream()
+                                        .map(ServiceImage::getImgUrl)
+                                        .toList())
+                                .description(service.getDescription())
+                                .address(service.getAddress())
+                                .servieId(service.getId())
+                                .bookmarkCount(response.getBookmarkCount())
+                                .reviewCount(response.getReviewCount())
+                                .build();
+
+                        excellentServiceDtoList.add(excellentServiceDto);
+                    });
+        }
+
+        return excellentServiceDtoList;
+
+    }
 }

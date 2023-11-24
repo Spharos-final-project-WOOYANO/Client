@@ -1,4 +1,4 @@
-package spharos.client.service.vo.response;
+package spharos.client.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,16 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class SearchServiceDataListResponse {
+@NoArgsConstructor
+public class ExcellentServiceDto {
 
     private String name;
-    private String type;
-    private Long serviceId;
     private List<String> imgUrl;
     private String description;
     private String address;
+    private Long servieId;
+    private int bookmarkCount;
+    private int reviewCount;
 }
