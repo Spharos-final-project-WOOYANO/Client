@@ -25,12 +25,12 @@ public class ServiceCategory { //중간테이블 - service와 category의 FK를 
     private Category category;
 
     public ServiceCategory(Services service,
-                           Category category) {
+                            Category category) {
         this.service = service;
         this.category = category;
     }
     public static ServiceCategory createServiceCategory(Services service,
-                                                         Category category) {
+                                                            Category category) {
         return new ServiceCategory(service, category);
     }
 }
