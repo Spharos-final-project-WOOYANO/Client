@@ -30,4 +30,7 @@ public interface ClientService {
     // 비밀번호 확인
     Boolean confirmPassword(ConfirmPasswordDto confirmPasswordDto);
 
+    //입점 신청된 업체의 서비스 목록 조화
+
+
 }

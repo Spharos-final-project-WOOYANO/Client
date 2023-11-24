@@ -23,6 +23,8 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2022.0.4")
+	axonVersion = '4.8.0'
+
 }
 
 dependencies {
@@ -60,6 +62,13 @@ dependencies {
 //	testImplementation 'com.querydsl:querydsl-jpa:5.0.0'
 	// feign clients
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+
+	//axon
+	implementation group: 'org.axonframework', name: 'axon-spring-boot-starter', version: "$axonVersion"
+	implementation group: 'org.axonframework', name: 'axon-configuration', version: "$axonVersion"
+
+
 
 	sourceSets {
 		main {
