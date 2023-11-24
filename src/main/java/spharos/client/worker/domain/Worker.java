@@ -28,21 +28,20 @@ public class Worker {
     @Column(nullable = false, length = 255, name = "img_url")
     private String imgUrl;
 
-    @Column(nullable = false, length = 20, name = "status")
-    private Integer status;
+    @Column(nullable = false, name = "status")
+    private Boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Services service;
 
-    public Worker(Long id,
+    public Worker(
                   String name,
                   String phone,
                   String description,
                   String imgUrl,
-                  Integer status,
+                  Boolean status,
                   Services service) {
-        this.id = id;
         this.name = name;
         this.phone = phone;
         this.description = description;
@@ -51,13 +50,13 @@ public class Worker {
         this.service = service;
     }
 
-    public static Worker createWorker(Long id,
+    public static Worker createWorker(
                                       String name,
                                       String phone,
                                       String description,
                                       String imgUrl,
-                                      Integer status,
+                                      Boolean status,
                                       Services service) {
-        return new Worker(id,name, phone, description, imgUrl, status, service);
+        return new Worker(name, phone, description, imgUrl, status, service);
     }
 }
