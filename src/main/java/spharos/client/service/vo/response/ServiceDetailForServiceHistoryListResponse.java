@@ -14,5 +14,6 @@ public class ServiceDetailForServiceHistoryListResponse {
     private String logoUrl;
     private String serviceName;
     private String workerName;
+    private String imgUrl;
 
 }
