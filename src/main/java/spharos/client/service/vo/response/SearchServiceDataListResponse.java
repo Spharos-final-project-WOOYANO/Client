@@ -13,6 +13,7 @@ import java.util.List;
 public class SearchServiceDataListResponse {
 
     private String name;
+    private Long serviceId;
     private List<String> imgUrl;
     private String description;
     private String address;
