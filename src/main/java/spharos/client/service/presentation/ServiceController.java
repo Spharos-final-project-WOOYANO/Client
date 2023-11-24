@@ -68,6 +68,8 @@ public class ServiceController {
                 .map(searchServiceData -> SearchServiceDataListResponse.builder()
                         .name(searchServiceData.getName())
                         .imgUrl(searchServiceData.getImgUrl())
+                        .type(searchServiceData.getType())
+                        .serviceId(searchServiceData.getServiceId())
                         .description(searchServiceData.getDescription())
                         .address(searchServiceData.getAddress())
                         .build())

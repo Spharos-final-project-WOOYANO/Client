@@ -195,7 +195,7 @@ public class SearchServiceImpl implements SearchService {
         return searchServiceDataListResponseList;
     }
 
-    @Override
+    @Override //현재 로그인한 유저의 기본주소에 해당하는 업체만 조회되도록
     public List<SearchServiceDataListDto> findServiceTypeSearch(String type) {
 
         ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
