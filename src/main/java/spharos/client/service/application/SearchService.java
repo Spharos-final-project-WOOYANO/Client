@@ -12,4 +12,7 @@ public interface SearchService {
     List<SearchServiceDataListResponse> findServiceListData(List<Long> serviceIdList,String type);
     List<SearchServiceDataListDto> findServiceTypeSearch(String type);
     List<ExcellentServiceDto> findExcellentServiceList();
+
+
+
 }

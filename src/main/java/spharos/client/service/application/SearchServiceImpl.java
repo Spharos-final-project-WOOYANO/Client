@@ -168,6 +168,7 @@ public class SearchServiceImpl implements SearchService {
 
             Services service = serviceOptional.get();
             String serviceName = service.getName();
+            
             String serviceAddress = service.getAddress();
             String serviceDescription = service.getDescription();
 
@@ -182,6 +183,7 @@ public class SearchServiceImpl implements SearchService {
                     .name(serviceName)
                     .serviceId(serviceId)
                     .imgUrl(searchServiceImgUrlList)
+                    .type(type)
                     .address(serviceAddress)
                     .description(serviceDescription)
                     .type(type)

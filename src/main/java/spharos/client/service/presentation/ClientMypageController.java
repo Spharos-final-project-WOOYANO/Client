@@ -6,13 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import spharos.client.global.common.response.BaseResponse;
 import spharos.client.service.application.ClientMypageService;
-import spharos.client.service.vo.request.ClientModifyServiceRequest;
-import spharos.client.service.vo.request.ClientRegisterServiceRequest;
-import spharos.client.service.vo.request.ServiceAreaModifyRequest;
-import spharos.client.service.vo.request.ServiceAreaRegisterRequest;
+import spharos.client.service.vo.request.*;
 import spharos.client.service.vo.response.ClientRegisterServiceResponse;
 import spharos.client.service.vo.response.ClientServiceResponse;
 import spharos.client.service.vo.response.ServiceAreaResponse;
+import spharos.client.service.vo.response.ServiceWorkerListResponse;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -130,11 +130,30 @@ public class ClientMypageController {
     /*
         작업자 리스트 조회
     */
+    @Operation(summary = "작업자 리스트 조회",
+            description = "작업자 리스트 조회",
+            tags = { "Client Mypage" })
+    @GetMapping("/service/worker/list/{serviceId}")
+    public BaseResponse<?> getClientServiceWorkerList(@PathVariable("serviceId") Long serviceId) {
 
+        // 작업자 리스트 조회
+        List<ServiceWorkerListResponse> response = clientMypageService.getServiceWorkerList(serviceId);
+        return new BaseResponse<>(response);
+    }
 
     /*
         작업자 추가
     */
+    @Operation(summary = "작업자 추가",
+            description = "작업자 추가",
+            tags = { "Client Mypage" })
+    @PostMapping("/service/worker")
+    public BaseResponse<?> registerClientServiceWorker(@RequestBody ServiceWorkerRegisterRequest request) {
+
+        // 작업자 추가
+        clientMypageService.registerServiceWorker(request);
+        return new BaseResponse<>();
+    }
 
 
     /*
@@ -145,5 +164,15 @@ public class ClientMypageController {
     /*
         작업자 삭제
     */
+    @Operation(summary = "작업자 삭제",
+            description = "작업자 삭제",
+            tags = { "Client Mypage" })
+    @DeleteMapping("/service/worker/{workerId}")
+    public BaseResponse<?> deleteClientServiceWorker(@PathVariable("workerId") Long workerId) {
+
+        // 작업자 추가
+        clientMypageService.deleteServiceWorker(workerId);
+        return new BaseResponse<>();
+    }
 
 }

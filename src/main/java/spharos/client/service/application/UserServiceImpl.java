@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService {
                 .logoUrl(services.getLogoUrl())
                 .serviceName(services.getName())
                 .workerName(worker.getName())
+                .imgUrl(worker.getImgUrl())
                 .build();
     }
 
