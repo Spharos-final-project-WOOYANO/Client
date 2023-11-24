@@ -13,6 +13,8 @@ import java.util.List;
 public class SearchServiceDataListDto {
 
     private String name;
+    private String type;
+    private Long serviceId;
     private List<String> imgUrl;
     private String description;
     private String address;

@@ -203,6 +203,8 @@ public class SearchServiceImpl implements SearchService {
         return serviceCategoryRepository.findByCategoryBaseCategory(serviceType).stream()
                 .map(serviceCategory -> SearchServiceDataListDto.builder()
                         .name(serviceCategory.getService().getName())
+                        .type(type)
+                        .serviceId(serviceCategory.getService().getId())
                         .imgUrl(serviceImageRepository.findByServiceId(serviceCategory.getService().getId()).stream()
                                 .map(ServiceImage::getImgUrl)
                                 .toList())
