@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReviewWriterDto {
 
+    private Long workerId;
     private String workerName;
+    private Long serviceId;
     private String serviceName;
 
 }

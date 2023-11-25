@@ -17,7 +17,9 @@ public class ReviewController {
 
                 return reviewService.retrieveReviewWriter(reservationNumList).stream()
                 .map(reviewWriterDto -> ReviewWriterResponse.builder()
+                        .serviceId(reviewWriterDto.getServiceId())
                         .serviceName(reviewWriterDto.getServiceName())
+                        .workerId(reviewWriterDto.getWorkerId())
                         .workerName(reviewWriterDto.getWorkerName())
                         .build())
                 .toList();
