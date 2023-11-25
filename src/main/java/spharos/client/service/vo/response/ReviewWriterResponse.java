@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewWriterResponse {
 
+    private Long workerId;
     private String workerName;
+    private Long serviceId;
     private String serviceName;
 
 }

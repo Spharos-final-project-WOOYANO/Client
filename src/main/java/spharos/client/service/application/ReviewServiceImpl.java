@@ -24,10 +24,12 @@ public class ReviewServiceImpl implements ReviewService{
                 .map(Optional::get)
                 .toList();
 
-        //reservaton에 예약번호를 전달하고 해당하는 작업자Id,
+        //workerReservation에 예약번호를 전달하고 해당하는 작업자Id,
         return historyList.stream()
                 .map(history -> ReviewWriterDto.builder()
+                        .workerId(history.getWorker().getId())
                         .workerName(history.getWorker().getName())
+                        .serviceId(history.getWorker().getService().getId())
                         .serviceName(history.getWorker().getService().getName())
                         .build())
                 .toList();
