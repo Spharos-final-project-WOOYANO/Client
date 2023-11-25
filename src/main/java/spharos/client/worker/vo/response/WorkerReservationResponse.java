@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Getter
 @Builder
@@ -12,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 public class WorkerReservationResponse {
 
+    private Long workerId;
+    private Long serviceId;
     private String name;
     private String description;
     private String imgUrl;

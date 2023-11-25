@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WorkerDetailDto {
 
+        private Long workerId;
         private String name;
         private String imgUrl;
         private String description;

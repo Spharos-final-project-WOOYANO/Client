@@ -42,6 +42,7 @@ public class WorkerServiceImpl implements WorkerService{
         for (Worker worker: workerList) {
 
             WorkerDetailDto workerDetailDto = WorkerDetailDto.builder()
+                            .workerId(worker.getId())
                             .name(worker.getName())
                             .imgUrl(worker.getImgUrl())
                             .description(worker.getDescription())
