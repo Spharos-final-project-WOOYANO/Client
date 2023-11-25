@@ -13,9 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class ServiceDetailResponse {
 
+    private Long serviceId;
     private String description;
     private String name;
     private List<Integer> serviceAreaList;
     private String registrationNumber;
     private String clientAddress;
+    private List<String> serviceImgUrlList;
 }
