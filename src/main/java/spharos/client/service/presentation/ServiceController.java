@@ -33,11 +33,13 @@ public class ServiceController {
         ServiceDetailDto serviceDetailDto = retrieveServiceDetailService.retrieveServiceDetail(serviceId);
 
         ServiceDetailResponse serviceDetailResponse = ServiceDetailResponse.builder()
+                .serviceId(serviceId)
                 .description(serviceDetailDto.getDescription())
                 .name(serviceDetailDto.getClientName())
                 .serviceAreaList(serviceDetailDto.getServiceAreaList())
                 .registrationNumber(serviceDetailDto.getRegistrationNumber())
                 .clientAddress(serviceDetailDto.getClientAddress())
+                .serviceImgUrlList(serviceDetailDto.getServiceImgUrlList())
                 .build();
 
         return new BaseResponse<>(serviceDetailResponse);

@@ -16,5 +16,6 @@ public class ServiceDetailDto {
     private String clientName;
     private String clientAddress;
     private String registrationNumber;
+    private List<String> serviceImgUrlList;
 
 }
