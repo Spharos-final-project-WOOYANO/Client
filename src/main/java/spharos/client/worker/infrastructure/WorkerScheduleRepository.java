@@ -13,6 +13,5 @@ public interface WorkerScheduleRepository extends JpaRepository<WorkerSchedule, 
 
     Optional<WorkerSchedule> findByDayOfWeekAndWorkerId(DayOfWeekType dayOfWeek, Long workerId);
     Optional<WorkerSchedule> findByWorkerId(Long workerId);
-//    Optional<LocalTime> findEndTimeByDayOfWeekAndWorkerId(DayOfWeek date,Long workerId)
     List<WorkerSchedule> findByWorker(Worker worker);
 }
