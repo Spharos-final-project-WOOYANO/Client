@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
+
     List<Worker> findByServiceId(Long serviceId);
     Optional<Worker> findById(Long workerId);
     List<Worker> findByService(Services services);
+
+    List<Worker> findByServiceIdAndStatus(Long serviceId, boolean status);
 }

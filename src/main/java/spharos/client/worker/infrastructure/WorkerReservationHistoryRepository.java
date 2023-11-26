@@ -12,4 +12,6 @@ public interface WorkerReservationHistoryRepository extends JpaRepository<Worker
 
     Optional<WorkerReservationHistory> findByReservationNum(String reservationNum);
 
+    List<WorkerReservationHistory> findByWorkerIdAndReservationDate(Long workerId, LocalDate date);
+
 }
