@@ -5,10 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
-import spharos.client.service.domain.category.Category;
 import spharos.client.service.domain.category.converter.BaseTypeConverter;
 import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
-import spharos.client.service.domain.services.ServiceArea;
 import spharos.client.service.domain.services.ServiceImage;
 import spharos.client.service.domain.services.Services;
 import spharos.client.service.dto.SearchServiceDataListDto;
@@ -31,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -47,11 +46,14 @@ public class SearchServiceImpl implements SearchService {
     private final ServicesRepository servicesRepository;
     private final CategoryRepository categoryRepository;
     private final BookmarkFeignClient bookmarkFeignClient;
+
     @Override
     public List<Long> findServiceList(String type, LocalDate date, Integer region) {
 
         // 1. 해당 지역에 서비스를 제공하는 업체들을 조회한다.
-        List<ServiceArea> serviceAreaList = serviceAreaRepository.findByAreaCode(region);
+        List<Long> serviceIdList = serviceAreaRepository.findByAreaCode(region).stream()
+                .map(serviceArea -> serviceArea.getServices().getId())
+                .toList();
 
         // 1-2. 타입 설정(BaseType설정)
         ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
@@ -65,23 +67,9 @@ public class SearchServiceImpl implements SearchService {
         List<Long> servicePossibleList = new ArrayList<>();
 
         // 2. ServiceAreaList의 길이만큼 반복문 실행 +(해당 지역에 서비스를 제공하는 업체들의 수)
-        for (ServiceArea serviceArea : serviceAreaList) {
-            //ServiceArea에서 서비스의 id를 가져옴
-            Long serviceId = serviceArea.getServices().getId();
-            log.info("serviceId : {}", serviceId);
+        for (Long serviceId : serviceIdList) {
 
-            // 2-2. serviceId와 type을 통해 서비스가 해당 타입의 서비스를 제공하는지 여부를 조회
-            //      false - 지역은 일치하지만 타입은 일치하지 않는 업체
-            //      true - 해당 지역에서 해당 타입의 서비스를 제공하는 업체
-            Optional<Category> checkCategory = categoryRepository.findByBaseCategory(serviceType);
-            if (checkCategory.isEmpty()) {
-                //↓ 아래의 예외가 실제로 발생할지 의문입니다.
-                throw new CustomException(ResponseCode.CANNOT_FIND_SERVICE_CATEGORY_TYPE);
-                //  그것이 실제로 발생했습니다....
-            }
-            boolean checkServiceType = serviceCategoryRepository.existsByCategoryIdAndServiceId(checkCategory.get().getId(), serviceId);
-
-            log.info("serviceTypeFilter : {}", checkServiceType);
+            boolean checkServiceType = serviceCategoryRepository.existsByCategoryBaseCategoryAndServiceId(serviceType,serviceId);
 
             if (checkServiceType) {
                 // 3.해당 업체에 속한 모든 작업자를 검색 후 list에 저장
@@ -90,7 +78,6 @@ public class SearchServiceImpl implements SearchService {
                 // 3-2. 해당 업체에 속한 모든 작업자 수를 int타입의 변수에 저장
                 //       ->해당 변수의 값이 0인 업체는 표시되지 않음
                 int workerListSize = workerList.size();
-                log.info("workerListSize : {}", workerListSize);
 
                 // 4. 해당 작업자가 서비스 가능한 작업자인지 판단하기 위한 반복문
                 for (Worker workers : workerList) {
@@ -153,6 +140,7 @@ public class SearchServiceImpl implements SearchService {
         //컨트롤러로 serviceId 리스트 리턴
         return servicePossibleList;
     }
+
 
     @Override
     public List<SearchServiceDataListResponse> findServiceListData(List<Long> serviceIdList,String type) {

@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface ServicesRepository extends JpaRepository<Services, Long> {
 
     Optional<Services> findById(Long serviceId);
-
 }

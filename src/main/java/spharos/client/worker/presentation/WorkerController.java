@@ -12,7 +12,6 @@ import spharos.client.worker.application.WorkerService;
 import spharos.client.worker.dto.ReservationPossibleWorkerDto;
 import spharos.client.worker.vo.response.ReservationPossibleWorkerResponse;
 import spharos.client.worker.vo.response.WorkerReservationResponse;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class WorkerController {
             tags = { "Possible Worker List Retrieve" })
     @GetMapping("/possible/time-list")
     public BaseResponse<ReservationPossibleWorkerResponse> getPossibleWorkerList(@RequestParam("serviceId") Long serviceId,
-                                                 @RequestParam("workerId") Long workerId, @RequestParam("reservationDate") LocalDate reservationDate){
+                                                    @RequestParam("workerId") Long workerId, @RequestParam("reservationDate") LocalDate reservationDate){
 
         ReservationPossibleWorkerDto dto = workerService.findPossibleWorker(serviceId, workerId, reservationDate);
         ReservationPossibleWorkerResponse responseBody = ReservationPossibleWorkerResponse.builder()

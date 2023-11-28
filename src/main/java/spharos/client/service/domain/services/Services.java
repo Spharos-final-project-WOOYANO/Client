@@ -27,7 +27,7 @@ public class Services {
 
     @Column(nullable = false,length = 30,name = "name")
     private String name;
-
+    // 서비스 사무실 주소(!= 서비스 가능주소)
     @Column(nullable = false,length = 50,name = "address")
     private String address;
 
@@ -44,10 +44,10 @@ public class Services {
         this.address = address;
     }
     public static Services createService(String logoUrl,
-                                         String description,
-                                         String headerImgUrl,
-                                         String name,
-                                         String address){
+                                            String description,
+                                            String headerImgUrl,
+                                            String name,
+                                            String address){
         //접근 지정자를 static으로 줘서 외부에서도 접근가능하게 함
         return new Services(logoUrl,description,headerImgUrl,name,address);
         
@@ -55,7 +55,7 @@ public class Services {
 
     // 서비스 수정
     public void modifyService(String logoUrl, String description, String headerImgUrl,
-                             String name, String address) {
+                                String name, String address) {
         this.logoUrl = logoUrl;
         this.description = description;
         this.headerImgUrl = headerImgUrl;
