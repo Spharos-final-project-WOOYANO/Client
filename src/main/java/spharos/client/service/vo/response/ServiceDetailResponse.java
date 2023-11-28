@@ -20,4 +20,5 @@ public class ServiceDetailResponse {
     private String registrationNumber;
     private String clientAddress;
     private List<String> serviceImgUrlList;
+    private String serviceHeaderImgUrl;
 }

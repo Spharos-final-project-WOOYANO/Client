@@ -78,13 +78,12 @@ public class SearchServiceImpl implements SearchService {
                 for (Worker workers : workerList) {
                     // 4-2. 해당 작업자의 id를 가져옴
                     Long workerId = workers.getId();
-
+                    log.info("workerId : {}", workerId);
                     // 4-3. DayOfWeek타입을 int타입으로 변환한뒤 Converter를 통해 최종적으로 Enum타입으로 변환한다.
                     DayOfWeek dayOfWeek = date.getDayOfWeek();
                     int dayOfWeekInt = dayOfWeek.getValue();
 
                     DayOfWeekType dayOfWeekType = new DayOfWeekConverter().convertToEntityAttribute(dayOfWeekInt);
-
                     // 5.해당 날짜의 요일과 작업자의 Id를 통해 작업자의 해당 요일의 업무 일정을 조회
                     Optional<WorkerSchedule> optionalWorkerSchedule = workerScheduleRepository.findByDayOfWeekAndWorkerId(dayOfWeekType, workerId);
 
@@ -109,17 +108,17 @@ public class SearchServiceImpl implements SearchService {
                         Duration reservationDuration = Duration.between(reservationStartTime,reservationEndTime);
                         //duration변수의 값을 변경하기위해 Lambda식이 아닌 forEach문 사용
                         duration = duration.minus(reservationDuration);
-                    }
-                    if(duration.toMinutes() < 60) {
-                        workerListSize--;
+                        if(duration.toHours() < 1) {
+                            workerListSize--;
+                            break;
                         }
+                    }
+                    if (workerListSize >= 1) {
+                        servicePossibleList.add(serviceId);
+                        log.info("servicePossibleList : {}", serviceId);
+                        // 서비스 가능한 작업자가 1명이상 일때
                 }
-                if (workerListSize > 1) {
-                    servicePossibleList.add(serviceId);
-                    log.info("servicePossibleList : {}", serviceId);
-                // 서비스 가능한 작업자가 1명이상 일때
             }
-
         }
         //컨트롤러로 serviceId 리스트 리턴
         return servicePossibleList;
