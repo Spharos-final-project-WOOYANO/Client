@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
+import spharos.client.service.domain.category.ServiceCategory;
 import spharos.client.service.domain.category.converter.BaseTypeConverter;
 import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 import spharos.client.service.domain.services.ServiceImage;
@@ -49,10 +50,12 @@ public class SearchServiceImpl implements SearchService {
     public List<Long> findServiceList(String type, LocalDate date, Integer region) {
 
         ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
+        log.info("type : {}", type);
+        log.info("serviceType : {}", serviceType);List<ServiceCategory> serviceCategoryList = serviceCategoryRepository.findAllByCategoryBaseCategory(serviceType);
 
         // 1. 해당 지역에 해당하는 타입의 서비스를 제공하는 업체들을 조회한다.
         List<Long> serviceIdList = serviceAreaRepository.findByAreaCode(region).stream()
-                .filter(serviceArea -> serviceCategoryRepository.findByCategoryBaseCategory(serviceType).stream()
+                .filter(serviceArea -> serviceCategoryRepository.findAllByCategoryBaseCategory(serviceType).stream()
                         .anyMatch(serviceCategory -> serviceCategory.getService().getId().equals(serviceArea.getServices().getId())))
                 .map(serviceArea -> serviceArea.getServices().getId())
                 .toList();
@@ -81,7 +84,7 @@ public class SearchServiceImpl implements SearchService {
                     // 4-3. DayOfWeek타입을 int타입으로 변환한뒤 Converter를 통해 최종적으로 Enum타입으로 변환한다.
                     DayOfWeek dayOfWeek = date.getDayOfWeek();
                     int dayOfWeekInt = dayOfWeek.getValue();
-                    log.info("dayOfWeekInt : {}", dayOfWeekInt);
+
                     DayOfWeekType dayOfWeekType = new DayOfWeekConverter().convertToEntityAttribute(dayOfWeekInt);
 
                     // 5.해당 날짜의 요일과 작업자의 Id를 통해 작업자의 해당 요일의 업무 일정을 조회
