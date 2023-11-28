@@ -14,6 +14,7 @@ import spharos.client.service.vo.response.ServiceDetailResponse;
 import spharos.client.service.vo.response.ExcellentServiceResponse;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -50,8 +51,14 @@ public class ServiceController {
     @GetMapping("/search") // required=false 옵션으로 해당 requestParam이 null일 경우에도 정상적으로 동작하도록 설정
     public BaseResponse<List<SearchServiceDataListResponse>> searchList(@RequestParam("type") String type , @RequestParam(value="date",required=false) LocalDate date , @RequestParam("region") Integer region) throws ParseException {
 
-        List<Long> possibleServiceIdList = searchService.findServiceList(type,date,region);
+        List<Long> possibleServiceIdList = new ArrayList<>();
 
+        if (type.equals("1") || type.equals("4") ){
+            possibleServiceIdList = searchService.findWorkerServiceList(type,date,region);
+        }
+        else {
+            possibleServiceIdList = searchService.findServiceList(type,region);
+        }
         List<SearchServiceDataListResponse> searchServiceDtoList = searchService.findServiceListData(possibleServiceIdList,type);
 
         return new BaseResponse<>(searchServiceDtoList);
