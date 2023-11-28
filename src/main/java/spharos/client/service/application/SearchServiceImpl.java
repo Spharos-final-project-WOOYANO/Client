@@ -51,20 +51,20 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<Long> findServiceList(String type, LocalDate date, Integer region) {
 
-        // 1. 해당 지역에 서비스를 제공하는 업체들을 조회한다.
+        ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
+
+        // 1. 해당 지역에 해당하는 타입의 서비스를 제공하는 업체들을 조회한다.
         List<Long> serviceIdList = serviceAreaRepository.findByAreaCode(region).stream()
+                .filter(serviceArea -> serviceCategoryRepository.findByCategoryBaseCategory(serviceType).stream()
+                        .anyMatch(serviceCategory -> serviceCategory.getService().getId().equals(serviceArea.getServices().getId())))
                 .map(serviceArea -> serviceArea.getServices().getId())
                 .toList();
 
-        // 1-2. 타입 설정(BaseType설정)
-        ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
-
-        // 1-3. date가 null일 경우 현재 날짜로 설정
+        // 1-2. date가 null일 경우 현재 날짜로 설정
         if (date == null) {
             date = LocalDate.now();
         }
-
-        // 1-4.서비스 가능한 업체의id를 담을 빈 배열 초기화 -> 어느 시점에서 해야할지 모르겠어서 지금 초기화
+        // 1-3.서비스 가능한 업체의id를 담을 빈 배열 초기화
         List<Long> servicePossibleList = new ArrayList<>();
 
         // 2. ServiceAreaList의 길이만큼 반복문 실행 +(해당 지역에 서비스를 제공하는 업체들의 수)
@@ -77,6 +77,7 @@ public class SearchServiceImpl implements SearchService {
             int workerListSize = workerList.size();
 
             Optional<ServiceCategory> serviceCategory = serviceCategoryRepository.findByServiceId(serviceId);
+
             // ↓ 요청받은 서비스 타입
             Optional<Category> categoryOptional = categoryRepository.findByBaseCategory(serviceType);
             Long categoryId = categoryOptional.get().getId();
