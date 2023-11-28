@@ -89,6 +89,7 @@ public class SearchServiceImpl implements SearchService {
                     int dayOfWeekInt = dayOfWeek.getValue();
                     log.info("dayOfWeekInt : {}", dayOfWeekInt);
                     DayOfWeekType dayOfWeekType = new DayOfWeekConverter().convertToEntityAttribute(dayOfWeekInt);
+
                     // 5.해당 날짜의 요일과 작업자의 Id를 통해 작업자의 해당 요일의 업무 일정을 조회
                     Optional<WorkerSchedule> optionalWorkerSchedule = workerScheduleRepository.findByDayOfWeekAndWorkerId(dayOfWeekType, workerId);
 
@@ -98,41 +99,33 @@ public class SearchServiceImpl implements SearchService {
                         break;
                     }
                     WorkerSchedule workerSchedules = optionalWorkerSchedule.get();
-                    log.info("workerSchedules : {}", workerSchedules);
 
-                    // 5-4.해당 근무자의 근무시작시간과 근무종료시간을 LocalTime타입으로 가져옴
                     LocalTime startTime = workerSchedules.getServiceStartTime();
                     LocalTime endTime = workerSchedules.getServiceFinishTime();
 
-                    long diffMinutes = Duration.between(endTime, startTime).toMinutes() / 60;
+                    Duration duration = Duration.between(startTime,endTime);
+                    List<WorkerReservationHistory> reservationHistoryList = workerReservationHistoryRepository.findByWorkerIdAndReservationDate(workerId,date);
 
-                    if (diffMinutes < 0) {
-                        // + 만약에 근무종료시간이 근무시작시간보다 작은경우가 생긴다면 결과가 음수이므로 양수로 바꿔준다.
-                        diffMinutes *= -1;
-                    }
-                    log.info("diffMinutes : {}", diffMinutes);
+                    reservationHistoryList
+                            .forEach(reservationHistory -> {
 
-                    // 6.해당 작업자의 해당일 예약내역을 List에 저장
-                    List<WorkerReservationHistory> workerReservationHistoryList = workerReservationHistoryRepository.findByReservationDateAndWorkerId(date, workers.getId());
+                                LocalTime reservationStartTime = reservationHistory.getStartTime();
+                                LocalTime reservationEndTime = reservationHistory.getEndTime();
 
-                    for (WorkerReservationHistory workerReservationHistory : workerReservationHistoryList) {
-                        diffMinutes -= workerReservationHistory.getServiceTime();
-                        log.info("diffMinutes : {}", diffMinutes);
-                        if (diffMinutes <= 1) {
-                            // 위에서 해당 업체의 총 작업자수로 초기화한 변수
-                            // 서비스 가능한 작업자수를 저장해서 표시될 업체인지를 판단(0이면 표시 X ,1이상이면 표시될 업체)
-                            // 해당 작업자가 서비스 가능시간이 1미만이 되면 서비스 불가능한 작업자이므로 총 작업자수에서 1감소 시킴
-                            workerListSize--;
-                            log.info("workerListSize : {}", workerListSize);
+                                Duration reservationDuration = Duration.between(reservationStartTime,reservationEndTime);
+                                // 시작시간 ~ 종료시간
+                                // 시작시간 + i시간 ~ 종료시간
+                                duration.minusMinutes(reservationDuration.toMinutes());
+                            });
+
+                    if(duration.toMinutes() < 60) {
+                        workerListSize--;
                         }
                     }
-                    log.info("workerListSize : {}", workerListSize);
-
-                    // 서비스 가능한 작업자가 0을 초과할 때
-                    if (workerListSize > 0) {
-                        servicePossibleList.add(serviceId);
-                        log.info("servicePossibleList : {}", serviceId);
-                    }
+                // 서비스 가능한 작업자가 1명이상 일때
+            if (workerListSize > 1) {
+                servicePossibleList.add(serviceId);
+                log.info("servicePossibleList : {}", serviceId);
                 }
             }
 
