@@ -47,11 +47,9 @@ public class SearchServiceImpl implements SearchService {
     private final BookmarkFeignClient bookmarkFeignClient;
 
     @Override
-    public List<Long> findServiceList(String type, LocalDate date, Integer region) {
+    public List<Long> findWorkerServiceList(String type, LocalDate date, Integer region) {
 
         ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
-        log.info("type : {}", type);
-        log.info("serviceType : {}", serviceType);List<ServiceCategory> serviceCategoryList = serviceCategoryRepository.findAllByCategoryBaseCategory(serviceType);
 
         // 1. 해당 지역에 해당하는 타입의 서비스를 제공하는 업체들을 조회한다.
         List<Long> serviceIdList = serviceAreaRepository.findByAreaCode(region).stream()
@@ -126,7 +124,18 @@ public class SearchServiceImpl implements SearchService {
         //컨트롤러로 serviceId 리스트 리턴
         return servicePossibleList;
     }
+    @Override
+    public List<Long> findServiceList(String type, Integer region) {
 
+        ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
+
+        return serviceAreaRepository.findByAreaCode(region).stream()
+                .filter(serviceArea -> serviceCategoryRepository.findAllByCategoryBaseCategory(serviceType).stream()
+                        .anyMatch(serviceCategory -> serviceCategory.getService().getId().equals(serviceArea.getServices().getId())))
+                .map(serviceArea -> serviceArea.getServices().getId())
+                .toList();
+
+    }
     @Override
     public List<SearchServiceDataListResponse> findServiceListData(List<Long> serviceIdList,String type) {
 
