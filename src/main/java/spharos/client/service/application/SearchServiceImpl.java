@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
-import spharos.client.service.domain.category.Category;
-import spharos.client.service.domain.category.ServiceCategory;
 import spharos.client.service.domain.category.converter.BaseTypeConverter;
 import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 import spharos.client.service.domain.services.ServiceImage;
@@ -46,7 +44,6 @@ public class SearchServiceImpl implements SearchService {
     private final ServiceImageRepository serviceImageRepository;
     private final ServicesRepository servicesRepository;
     private final BookmarkFeignClient bookmarkFeignClient;
-    private final CategoryRepository categoryRepository;
 
     @Override
     public List<Long> findServiceList(String type, LocalDate date, Integer region) {
@@ -75,15 +72,6 @@ public class SearchServiceImpl implements SearchService {
             // 3-2. 해당 업체에 속한 모든 작업자 수를 int타입의 변수에 저장
             //       ->해당 변수의 값이 0인 업체는 표시되지 않음
             int workerListSize = workerList.size();
-
-            Optional<ServiceCategory> serviceCategory = serviceCategoryRepository.findByServiceId(serviceId);
-
-            // ↓ 요청받은 서비스 타입
-            Optional<Category> categoryOptional = categoryRepository.findByBaseCategory(serviceType);
-            Long categoryId = categoryOptional.get().getId();
-
-            // 3-3. 요청받은 타입과 일차하는 타입의 업체만 조회하기위해 조건문 사용
-            if (serviceCategory.get().getCategory().getId() == categoryId){
 
                 // 4. 해당 작업자가 서비스 가능한 작업자인지 판단하기 위한 반복문
                 for (Worker workers : workerList) {
@@ -124,13 +112,13 @@ public class SearchServiceImpl implements SearchService {
                     if(duration.toMinutes() < 60) {
                         workerListSize--;
                         }
-                    }
+                }
+                if (workerListSize > 1) {
+                    servicePossibleList.add(serviceId);
+                    log.info("servicePossibleList : {}", serviceId);
                 // 서비스 가능한 작업자가 1명이상 일때
             }
-            if (workerListSize > 1) {
-                servicePossibleList.add(serviceId);
-                log.info("servicePossibleList : {}", serviceId);
-            }
+
         }
         //컨트롤러로 serviceId 리스트 리턴
         return servicePossibleList;

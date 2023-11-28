@@ -11,5 +11,4 @@ public interface ServiceCategoryRepository extends JpaRepository<ServiceCategory
     Optional<ServiceCategory> findByServiceId(Long ServiceId);
     List<ServiceCategory> findByCategoryBaseCategory(ServiceBaseCategoryType baseCategory);
 
-    boolean existsByCategoryBaseCategoryAndServiceId(ServiceBaseCategoryType baseCategory,Long serviceId);
 }
