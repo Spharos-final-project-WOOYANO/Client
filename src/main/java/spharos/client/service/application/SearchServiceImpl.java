@@ -29,7 +29,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -44,7 +43,6 @@ public class SearchServiceImpl implements SearchService {
     private final WorkerScheduleRepository workerScheduleRepository;
     private final ServiceImageRepository serviceImageRepository;
     private final ServicesRepository servicesRepository;
-    private final CategoryRepository categoryRepository;
     private final BookmarkFeignClient bookmarkFeignClient;
 
     @Override
@@ -69,15 +67,13 @@ public class SearchServiceImpl implements SearchService {
         // 2. ServiceAreaList의 길이만큼 반복문 실행 +(해당 지역에 서비스를 제공하는 업체들의 수)
         for (Long serviceId : serviceIdList) {
 
-            boolean checkServiceType = serviceCategoryRepository.existsByCategoryBaseCategoryAndServiceId(serviceType,serviceId);
+            // 3.해당 업체에 속한 모든 작업자를 검색 후 list에 저장
+            List<Worker> workerList = workerRepository.findByServiceId(serviceId);
+            // 3-2. 해당 업체에 속한 모든 작업자 수를 int타입의 변수에 저장
+            //       ->해당 변수의 값이 0인 업체는 표시되지 않음
+            int workerListSize = workerList.size();
 
-            if (checkServiceType) {
-                // 3.해당 업체에 속한 모든 작업자를 검색 후 list에 저장
-                List<Worker> workerList = workerRepository.findByServiceId(serviceId);
-
-                // 3-2. 해당 업체에 속한 모든 작업자 수를 int타입의 변수에 저장
-                //       ->해당 변수의 값이 0인 업체는 표시되지 않음
-                int workerListSize = workerList.size();
+            if (serviceCategoryRepository.existsByCategoryBaseCategoryAndServiceId(serviceType, serviceId)) {
 
                 // 4. 해당 작업자가 서비스 가능한 작업자인지 판단하기 위한 반복문
                 for (Worker workers : workerList) {
@@ -106,34 +102,29 @@ public class SearchServiceImpl implements SearchService {
                     Duration duration = Duration.between(startTime,endTime);
                     List<WorkerReservationHistory> reservationHistoryList = workerReservationHistoryRepository.findByWorkerIdAndReservationDate(workerId,date);
 
-                    reservationHistoryList
-                            .forEach(reservationHistory -> {
+                    for(WorkerReservationHistory reservationHistory : reservationHistoryList){
 
-                                LocalTime reservationStartTime = reservationHistory.getStartTime();
-                                LocalTime reservationEndTime = reservationHistory.getEndTime();
+                        LocalTime reservationStartTime = reservationHistory.getStartTime();
+                        LocalTime reservationEndTime = reservationHistory.getEndTime();
 
-                                Duration reservationDuration = Duration.between(reservationStartTime,reservationEndTime);
-                                // 시작시간 ~ 종료시간
-                                // 시작시간 + i시간 ~ 종료시간
-                                duration.minusMinutes(reservationDuration.toMinutes());
-                            });
-
+                        Duration reservationDuration = Duration.between(reservationStartTime,reservationEndTime);
+                        //duration변수의 값을 변경하기위해 Lambda식이 아닌 forEach문 사용
+                        duration = duration.minus(reservationDuration);
+                    }
                     if(duration.toMinutes() < 60) {
                         workerListSize--;
                         }
                     }
                 // 서비스 가능한 작업자가 1명이상 일때
+            }
             if (workerListSize > 1) {
                 servicePossibleList.add(serviceId);
                 log.info("servicePossibleList : {}", serviceId);
-                }
             }
-
         }
         //컨트롤러로 serviceId 리스트 리턴
         return servicePossibleList;
     }
-
 
     @Override
     public List<SearchServiceDataListResponse> findServiceListData(List<Long> serviceIdList,String type) {
