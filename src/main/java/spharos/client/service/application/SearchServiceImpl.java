@@ -55,7 +55,6 @@ public class SearchServiceImpl implements SearchService {
                 .filter(serviceArea -> serviceCategoryRepository.findAllByCategoryBaseCategory(serviceType).stream()
                         .anyMatch(serviceCategory -> serviceCategory.getService().getId().equals(serviceArea.getServices().getId())))
                 .map(serviceArea -> serviceArea.getServices().getId())
-                .distinct()
                 .toList();
 
         // 1-2. date가 null일 경우 현재 날짜로 설정
@@ -113,11 +112,12 @@ public class SearchServiceImpl implements SearchService {
                             break;
                         }
                     }
-                    if (workerListSize >= 1) {
-                        servicePossibleList.add(serviceId);
-                        log.info("servicePossibleList : {}", serviceId);
-                        // 서비스 가능한 작업자가 1명이상 일때
+
                 }
+                if (workerListSize >= 1) {
+                    servicePossibleList.add(serviceId);
+                    log.info("servicePossibleList : {}", serviceId);
+                    // 서비스 가능한 작업자가 1명이상 일때
             }
         }
         //컨트롤러로 serviceId 리스트 리턴
