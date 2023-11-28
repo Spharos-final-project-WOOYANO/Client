@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
-import spharos.client.service.domain.category.ServiceCategory;
 import spharos.client.service.domain.category.converter.BaseTypeConverter;
 import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
 import spharos.client.service.domain.services.ServiceImage;
@@ -108,7 +107,7 @@ public class SearchServiceImpl implements SearchService {
                         Duration reservationDuration = Duration.between(reservationStartTime,reservationEndTime);
                         //duration변수의 값을 변경하기위해 Lambda식이 아닌 forEach문 사용
                         duration = duration.minus(reservationDuration);
-                        if(duration.toHours() < 1) {
+                        if(duration.toHours() <= 1) {
                             workerListSize--;
                             break;
                         }
@@ -136,44 +135,32 @@ public class SearchServiceImpl implements SearchService {
 
     }
     @Override
-    public List<SearchServiceDataListResponse> findServiceListData(List<Long> serviceIdList,String type) {
+    public List<SearchServiceDataListDto> findServiceListData(List<Long> serviceIdList,String type) {
 
-        List<SearchServiceDataListResponse> searchServiceDataListResponseList = new ArrayList<>();
+        List<SearchServiceDataListDto> dtoList = new ArrayList<>();
 
         for (Long serviceId : serviceIdList) {
-            Optional<Services> serviceOptional = servicesRepository.findById(serviceId);
 
-            if (serviceOptional.isEmpty()) {
-                throw new CustomException(ResponseCode.CANNOT_FIND_SERVICE);
-            }
+            Services service = servicesRepository.findById(serviceId)
+                    .orElseThrow(() -> new CustomException(ResponseCode.CANNOT_FIND_SERVICE));
 
-            Services service = serviceOptional.get();
-            String serviceName = service.getName();
-            
-            String serviceAddress = service.getAddress();
-            String serviceDescription = service.getDescription();
+            List<String> serviceImageList = serviceImageRepository.findByServiceId(serviceId).stream()
+                    .map(ServiceImage::getImgUrl)
+                    .toList();
 
-            List<ServiceImage> serviceImageList = serviceImageRepository.findByServiceId(serviceId);
-            List<String> searchServiceImgUrlList = new ArrayList<>();
-
-            for (ServiceImage serviceImage : serviceImageList) {
-                searchServiceImgUrlList.add(serviceImage.getImgUrl());
-            }
-
-            SearchServiceDataListResponse searchServiceDataListResponse = SearchServiceDataListResponse.builder()
-                    .name(serviceName)
-                    .serviceId(serviceId)
-                    .imgUrl(searchServiceImgUrlList)
+            SearchServiceDataListDto dto = SearchServiceDataListDto.builder()
+                    .name(service.getName())
+                    .serviceId(service.getId())
+                    .imgUrl(serviceImageList)
                     .type(type)
-                    .address(serviceAddress)
-                    .description(serviceDescription)
-                    .type(type)
+                    .address(service.getAddress())
+                    .description(service.getDescription())
                     .build();
 
-            searchServiceDataListResponseList.add(searchServiceDataListResponse);
+            dtoList.add(dto);
         }
 
-        return searchServiceDataListResponseList;
+        return dtoList;
     }
 
     @Override //현재 로그인한 유저의 기본주소에 해당하는 업체만 조회되도록

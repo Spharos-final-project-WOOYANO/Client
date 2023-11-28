@@ -52,7 +52,7 @@ public class ServiceController {
     @GetMapping("/search") // required=false 옵션으로 해당 requestParam이 null일 경우에도 정상적으로 동작하도록 설정
     public BaseResponse<List<SearchServiceDataListResponse>> searchList(@RequestParam("type") String type , @RequestParam(value="date",required=false) LocalDate date , @RequestParam("region") Integer region) throws ParseException {
 
-        List<Long> possibleServiceIdList = new ArrayList<>();
+        List<Long> possibleServiceIdList;
 
         if (type.equals("1") || type.equals("4") ){
             possibleServiceIdList = searchService.findWorkerServiceList(type,date,region);
@@ -60,9 +60,18 @@ public class ServiceController {
         else {
             possibleServiceIdList = searchService.findServiceList(type,region);
         }
-        List<SearchServiceDataListResponse> searchServiceDtoList = searchService.findServiceListData(possibleServiceIdList,type);
+        List<SearchServiceDataListResponse> responseList = searchService.findServiceListData(possibleServiceIdList,type).stream()
+                .map(dto -> SearchServiceDataListResponse.builder()
+                        .name(dto.getName())
+                        .imgUrl(dto.getImgUrl())
+                        .type(dto.getType())
+                        .serviceId(dto.getServiceId())
+                        .description(dto.getDescription())
+                        .address(dto.getAddress())
+                        .build())
+                .toList();
 
-        return new BaseResponse<>(searchServiceDtoList);
+        return new BaseResponse<>(responseList);
 
     }
 
