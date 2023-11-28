@@ -7,6 +7,7 @@ import spharos.client.global.common.response.ResponseCode;
 import spharos.client.global.exception.CustomException;
 import spharos.client.service.domain.category.converter.BaseTypeConverter;
 import spharos.client.service.domain.category.enumType.ServiceBaseCategoryType;
+import spharos.client.service.domain.services.ServiceArea;
 import spharos.client.service.domain.services.ServiceImage;
 import spharos.client.service.domain.services.Services;
 import spharos.client.service.dto.SearchServiceDataListDto;
@@ -51,10 +52,10 @@ public class SearchServiceImpl implements SearchService {
         ServiceBaseCategoryType serviceType = new BaseTypeConverter().convertToEntityAttribute(type);
 
         // 1. 해당 지역에 해당하는 타입의 서비스를 제공하는 업체들을 조회한다.
-        List<Long> serviceIdList = serviceAreaRepository.findByAreaCode(region).stream()
+        List<Services> serviceList = serviceAreaRepository.findByAreaCode(region).stream()
                 .filter(serviceArea -> serviceCategoryRepository.findAllByCategoryBaseCategory(serviceType).stream()
                         .anyMatch(serviceCategory -> serviceCategory.getService().getId().equals(serviceArea.getServices().getId())))
-                .map(serviceArea -> serviceArea.getServices().getId())
+                .map(ServiceArea::getServices)
                 .toList();
 
         // 1-2. date가 null일 경우 현재 날짜로 설정
@@ -65,10 +66,10 @@ public class SearchServiceImpl implements SearchService {
         List<Long> servicePossibleList = new ArrayList<>();
 
         // 2. ServiceAreaList의 길이만큼 반복문 실행 +(해당 지역에 서비스를 제공하는 업체들의 수)
-        for (Long serviceId : serviceIdList) {
+        for (Services service : serviceList) {
 
             // 3.해당 업체에 속한 모든 작업자를 검색 후 list에 저장
-            List<Worker> workerList = workerRepository.findByServiceId(serviceId);
+            List<Worker> workerList = workerRepository.findByServiceId(service.getId());
             // 3-2. 해당 업체에 속한 모든 작업자 수를 int타입의 변수에 저장
             //       ->해당 변수의 값이 0인 업체는 표시되지 않음
             int workerListSize = workerList.size();
@@ -113,8 +114,8 @@ public class SearchServiceImpl implements SearchService {
                         }
                     }
                     if (workerListSize >= 1) {
-                        servicePossibleList.add(serviceId);
-                        log.info("servicePossibleList : {}", serviceId);
+                        servicePossibleList.add(service.getId());
+                        log.info("servicePossibleList : {}", service.getId());
                         // 서비스 가능한 작업자가 1명이상 일때
                 }
             }
