@@ -41,6 +41,7 @@ public class ServiceController {
                 .registrationNumber(serviceDetailDto.getRegistrationNumber())
                 .clientAddress(serviceDetailDto.getClientAddress())
                 .serviceImgUrlList(serviceDetailDto.getServiceImgUrlList())
+                .serviceHeaderImgUrl(serviceDetailDto.getServiceHeaderImgUrl())
                 .build();
 
         return new BaseResponse<>(serviceDetailResponse);

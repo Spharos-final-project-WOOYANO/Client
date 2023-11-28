@@ -49,6 +49,7 @@ public class RetrieveServiceDetailServiceImpl implements RetrieveServiceDetailSe
                 .serviceAreaList(servicePossibleRegionList)
                 .clientName(client.getClientName())
                 .clientAddress(client.getClientAddress())
+                .serviceHeaderImgUrl(services.getHeaderImgUrl())
                 .registrationNumber(client.getClientRegistrationNumber())
                 .serviceImgUrlList(imgUrlList)
                 .build();
