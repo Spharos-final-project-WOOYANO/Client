@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spharos.client.reservation.domain.ReservationGoods;
-import spharos.client.reservation.domain.ReservationState;
+import spharos.client.reservation.domain.enumPackage.ReservationState;
 
 @NoArgsConstructor
 @AllArgsConstructor

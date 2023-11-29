@@ -17,6 +17,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spharos.client.global.common.domain.BaseEntity;
+import spharos.client.reservation.domain.enumPackage.ReservationState;
+import spharos.client.reservation.domain.enumPackage.ReservationStateConverter;
 
 @Getter
 @Builder

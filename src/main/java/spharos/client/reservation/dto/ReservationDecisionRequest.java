@@ -3,7 +3,7 @@ package spharos.client.reservation.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import spharos.client.reservation.domain.ReservationState;
+import spharos.client.reservation.domain.enumPackage.ReservationState;
 
 
 @AllArgsConstructor
