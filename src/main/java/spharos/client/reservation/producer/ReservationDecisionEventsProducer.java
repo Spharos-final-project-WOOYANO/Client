@@ -31,9 +31,7 @@ public class ReservationDecisionEventsProducer {
         log.info("Sending Monthly Payment Event");
         var key = "test";
         String value = objectMapper.writeValueAsString(request);
-        //send하면 2개
-        //1.blocking call- kafka cluster에 대한 메타데이터를 가져온다 - 이게실패하면 메세지 못보냄
-        //2.메세지 보내기가 실제로 발생하고 비동기 반환 send message happens - return a completableFuture
+
 
         CompletableFuture<SendResult<String, String>> send = kafkaTemplate.send(topic, null, value);
         log.info("value : {}", value);
@@ -48,20 +46,11 @@ public class ReservationDecisionEventsProducer {
                     }
                 });
     }
-/*
-    private ProducerRecord<Integer, String> buildProducerRecord(String key, String value) {
-       // List<Header> recordHeaders = List.of(new RecordHeader("event-source", "scanner".getBytes()));  //바이트 배열을 제공
-        return new ProducerRecord<>(key,value);
-    }
-*/
+
 
     private void handleFailure(String key, String value, Throwable ex) {
         log.error("Error Sending the Message and the exception is {}", ex.getMessage());
-//        try {
-//            throw ex;
-//        } catch (Throwable throwable) {
-//            log.error("Error in OnFailure: {}", throwable.getMessage());
-//        }
+
 
     }
     private void handleSuccess(String key, String value, SendResult<String, String> result) {

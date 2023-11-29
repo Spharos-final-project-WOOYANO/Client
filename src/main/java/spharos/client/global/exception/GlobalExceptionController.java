@@ -18,12 +18,6 @@ public class GlobalExceptionController {
         return ErrorResponse.toResponseEntity(e.getResponseCode());
     }
 
-//    @ExceptionHandler(value = { CustomException.class })
-//    public ResponseEntity<BaseResponse> customExHandle(CustomException e) {
-//        BaseResponse response = new BaseResponse(e);
-//        log.error("[exceptionHandle] ex", e);
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-//    }
 
 
 }
